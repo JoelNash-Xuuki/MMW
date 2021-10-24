@@ -209,27 +209,23 @@ garvb	=		0
 <CsScore>
 f1 0 4096 10 1
 
-a 0 0 4
+a 0 0 0
 
 ; Chorus 1
-t 0 60
-#include "Snares/Snare_a.sco"
-f 0 8
-s
+;;t 0 60
+;;#include "Snares/Snare_a.sco"
+;;f 0 8
+;;s
 
+{ 16
 t 0 60
-;#include "Reverb/Reverb_a.sco"
-;#include "Delay/Delay_a.sco"
+#include "Reverb/Reverb_a.sco"
+#include "Delay/Delay_a.sco"
 #include "Snares/Snare_a.sco"
-;#include "Bass/Bass_a.sco"
-;s
-;t 0 60
-;#include "Reverb/Reverb_a.sco"
-;#include "Delay/Delay_a.sco"
-;#include "Snares/Snare_a.sco"
-;#include "Bass/Bass_b.sco"
-;s
-;}
+#include "Bass/Bass_a.sco"
+f 0 16
+s
+}
 
 
 
