@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 int main(){
   Csound* csound = new Csound();
   csound->CompileCsd("iydhoti.csd");

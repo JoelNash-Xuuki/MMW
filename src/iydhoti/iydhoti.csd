@@ -1,4 +1,4 @@
-oundSynthesizer>
+<CsoundSynthesizer>
 <CsOptions>
 
 </CsOptions>
@@ -153,7 +153,7 @@ garvb		=		garvb+(a1*irvbsnd)
 gacmb		=		gacmb+(a1*icmbsnd)
 	endin 
 
-		instr	128
+	instr	128
 idur	=		p3
 iamp	=		ampdb(p4)
 ifrq	=		p5
@@ -177,7 +177,7 @@ garvb		=		garvb+(afilt*irvbsnd)
 gacmb		=		gacmb+(afilt*icmbsnd)
 		endin
 
-		instr 1001
+	instr 1001
 ain1 		inch 0
 		fout "../db/doo-wop_voc1.wav", 14, ain1
 		outs ain1
@@ -186,11 +186,7 @@ ain1 		inch 0
 ;gacmb		=		gacmb+(ainauto*icmbsnd)		
 		endin
 
-
-; EFFECTS
-
-; DELAY
-		instr	198
+  instr	198 ; Delay
 idur	=		p3
 itime 	= 		p4
 iloop 	= 		p5
@@ -200,8 +196,7 @@ acomb 	comb	gacmb, itime, iloop, 0
 gacmb	=		0
 		endin
 
-;REVERB
-		instr 	199
+		instr 	199 ;REVERB
 idur	=		p3					
 irvbtim	=		p4
 ihiatn	=		p5
@@ -210,16 +205,8 @@ arvb	reverb2	garvb, irvbtim, ihiatn
 garvb	=		0
 		endin
 
-
-
-
-
-
-
 </CsInstruments>
 <CsScore>
-
-
 f1 0 4096 10 1
 
 a 0 0 4
@@ -230,20 +217,19 @@ t 0 60
 f 0 8
 s
 
-{ 3
 t 0 60
-#include "Reverb/Reverb_a.sco"
-#include "Delay/Delay_a.sco"
+;#include "Reverb/Reverb_a.sco"
+;#include "Delay/Delay_a.sco"
 #include "Snares/Snare_a.sco"
-#include "Bass/Bass_a.sco"
-s
-t 0 60
-#include "Reverb/Reverb_a.sco"
-#include "Delay/Delay_a.sco"
-#include "Snares/Snare_a.sco"
-#include "Bass/Bass_b.sco"
-s
-}
+;#include "Bass/Bass_a.sco"
+;s
+;t 0 60
+;#include "Reverb/Reverb_a.sco"
+;#include "Delay/Delay_a.sco"
+;#include "Snares/Snare_a.sco"
+;#include "Bass/Bass_b.sco"
+;s
+;}
 
 
 
