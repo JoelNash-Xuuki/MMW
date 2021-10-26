@@ -2,10 +2,6 @@
 --Csound version 6.16 (double samples) Jul 29 2021
 [commit: none]
 libsndfile-1.0.31
-Creating options
-Creating orchestra
-closing tag
-Creating score
 rtaudio: ALSA module enabled
 rtmidi: ALSA Raw MIDI module enabled
 graphics suppressed, ascii substituted
@@ -36,147 +32,35 @@ _'_____________________________________._______________________________________
                                                   -_                .'
                                                     -_           _.'
                                                       '-._____..'
-time advanced 4.000 beats by score request
-B  0.000 ..  1.000 T  1.000 TT  1.000 M:      0.0      0.0
-B  1.000 ..  3.000 T  3.000 TT  3.000 M:      0.0      0.0
-B  3.000 ..  5.000 T  5.000 TT  5.000 M:      0.0      0.0
+new alloc for instr 198:
+new alloc for instr 198:
+new alloc for instr 198:
+new alloc for instr 199:
+new alloc for instr 901:
+B  0.000 ..  1.000 T  1.000 TT  1.000 M:  12448.1  12631.0
 new alloc for instr 128:
-B  5.000 ..  7.000 T  7.000 TT  7.000 M:   1476.1   1088.0
-B  7.000 ..  8.000 T  8.000 TT  8.000 M:   1476.1   1088.0
-end of section 1	 sect peak amps:   1476.1   1088.0
+B  1.000 ..  3.000 T  3.000 TT  3.000 M:  26278.7  19347.6
+B  3.000 ..  4.000 T  4.000 TT  4.000 M:  26249.9  19347.6
+B  4.000 ..  5.000 T  5.000 TT  5.000 M:  12878.2  12612.9
+B  5.000 ..  7.000 T  7.000 TT  7.000 M:  26303.2  19347.6
+B  7.000 ..  8.000 T  8.000 TT  8.000 M:  26249.3  19347.6
+B  8.000 ..  9.000 T  9.000 TT  9.000 M:  12612.9  12612.9
+B  9.000 .. 11.000 T 11.000 TT 11.000 M:  26249.5  19347.6
+B 11.000 .. 12.000 T 12.000 TT 12.000 M:  26249.5  19347.6
+B 12.000 .. 13.000 T 13.000 TT 13.000 M:  12610.6  12610.6
+B 13.000 .. 15.000 T 15.000 TT 15.000 M:  26249.5  19347.6
+B 15.000 .. 15.020 T 15.020 TT 15.020 M:  26249.5  19347.6
+end of section 1	 sect peak amps:  26303.2  19347.6
 inactive allocs returned to freespace
 SECTION 2:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 199:
-new alloc for instr 901:
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  0.000 ..  1.000 T  1.000 TT  9.000 M:      7.2      0.0
-new alloc for instr 128:
-B  1.000 ..  3.000 T  3.000 TT 11.000 M:   1476.3   1088.0
-B  3.000 ..  4.000 T  4.000 TT 12.000 M:   1476.1   1088.0
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  4.000 ..  5.000 T  5.000 TT 13.000 M:      0.2      0.0
-B  5.000 ..  7.000 T  7.000 TT 15.000 M:   1476.1   1088.0
-B  7.000 ..  7.020 T  7.020 TT 15.020 M:   1476.1   1088.0
-B  7.020 ..  8.000 T  8.000 TT 16.000 M:      2.3      0.0
-end of section 2	 sect peak amps:   1476.3   1088.0
-inactive allocs returned to freespace
-SECTION 3:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 199:
-new alloc for instr 901:
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  0.000 ..  1.000 T  1.000 TT 17.000 M:      0.0      0.0
-new alloc for instr 128:
-B  1.000 ..  3.000 T  3.000 TT 19.000 M:   1476.1   1088.0
-B  3.000 ..  4.000 T  4.000 TT 20.000 M:   1476.1   1088.0
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  4.000 ..  5.000 T  5.000 TT 21.000 M:      0.2      0.0
-B  5.000 ..  7.000 T  7.000 TT 23.000 M:   1476.1   1088.0
-B  7.000 ..  7.020 T  7.020 TT 23.020 M:   1476.1   1088.0
-B  7.020 ..  8.000 T  8.000 TT 24.000 M:      2.3      0.0
-end of section 3	 sect peak amps:   1476.1   1088.0
-inactive allocs returned to freespace
-SECTION 4:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 199:
-new alloc for instr 901:
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  0.000 ..  1.000 T  1.000 TT 25.000 M:      0.0      0.0
-new alloc for instr 128:
-B  1.000 ..  3.000 T  3.000 TT 27.000 M:   1476.1   1088.0
-B  3.000 ..  4.000 T  4.000 TT 28.000 M:   1476.1   1088.0
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  4.000 ..  5.000 T  5.000 TT 29.000 M:      0.2      0.0
-B  5.000 ..  7.000 T  7.000 TT 31.000 M:   1476.1   1088.0
-B  7.000 ..  7.020 T  7.020 TT 31.020 M:   1476.1   1088.0
-B  7.020 ..  8.000 T  8.000 TT 32.000 M:      2.3      0.0
-end of section 4	 sect peak amps:   1476.1   1088.0
-inactive allocs returned to freespace
-SECTION 5:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 199:
-new alloc for instr 901:
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  0.000 ..  1.000 T  1.000 TT 33.000 M:      0.0      0.0
-new alloc for instr 128:
-B  1.000 ..  3.000 T  3.000 TT 35.000 M:   1476.1   1088.0
-B  3.000 ..  4.000 T  4.000 TT 36.000 M:   1476.1   1088.0
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  4.000 ..  5.000 T  5.000 TT 37.000 M:      0.2      0.0
-B  5.000 ..  7.000 T  7.000 TT 39.000 M:   1476.1   1088.0
-B  7.000 ..  7.020 T  7.020 TT 39.020 M:   1476.1   1088.0
-B  7.020 ..  8.000 T  8.000 TT 40.000 M:      2.3      0.0
-end of section 5	 sect peak amps:   1476.1   1088.0
-inactive allocs returned to freespace
-SECTION 6:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 199:
-new alloc for instr 901:
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  0.000 ..  1.000 T  1.000 TT 41.000 M:      0.0      0.0
-new alloc for instr 128:
-B  1.000 ..  3.000 T  3.000 TT 43.000 M:   1476.1   1088.0
-B  3.000 ..  4.000 T  4.000 TT 44.000 M:   1476.1   1088.0
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  4.000 ..  5.000 T  5.000 TT 45.000 M:      0.2      0.0
-B  5.000 ..  7.000 T  7.000 TT 47.000 M:   1476.1   1088.0
-B  7.000 ..  7.020 T  7.020 TT 47.020 M:   1476.1   1088.0
-B  7.020 ..  8.000 T  8.000 TT 48.000 M:      2.3      0.0
-end of section 6	 sect peak amps:   1476.1   1088.0
-inactive allocs returned to freespace
-SECTION 7:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 198:
-new alloc for instr 199:
-new alloc for instr 901:
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  0.000 ..  1.000 T  1.000 TT 49.000 M:      0.0      0.0
-new alloc for instr 128:
-B  1.000 ..  3.000 T  3.000 TT 51.000 M:   1476.1   1088.0
-B  3.000 ..  4.000 T  4.000 TT 52.000 M:   1476.1   1088.0
-WARNING: [minstr 901 uses 39 p-fields but is given 33[m
-[mB  4.000 ..  5.000 T  5.000 TT 53.000 M:      0.2      0.0
-B  5.000 ..  7.000 T  7.000 TT 55.000 M:   1476.1   1088.0
-B  7.000 ..  7.020 T  7.020 TT 55.020 M:   1476.1   1088.0
-B  7.020 ..  8.000 T  8.000 TT 56.000 M:      2.3      0.0
-end of section 7	 sect peak amps:   1476.1   1088.0
-inactive allocs returned to freespace
-SECTION 8:
-end of section 8	 sect peak amps:      0.0      0.0
+end of section 2	 sect peak amps:      0.0      0.0
 Score finished in csoundPerform().
 inactive allocs returned to freespace
-end of score.		   overall amps:   1476.3   1088.0
+end of score.		   overall amps:  26303.2  19347.6
 	   overall samples out of range:        0        0
 0 errors in performance
-Elapsed time at end of performance: real: 0.203s, CPU: 0.202s
+Elapsed time at end of performance: real: 0.048s, CPU: 0.048s
 512 1024 sample blks of shorts written to test.wav (WAV)
-path = .
-using path .
-stack pointer = 0
-path = .
-using path .
-stack pointer = 0
-path = .
-using path .
-stack pointer = 0
-path = .
-using path .
-stack pointer = 0
-path = .
-using path .
-stack pointer = 0
 path = .
 using path .
 stack pointer = 0

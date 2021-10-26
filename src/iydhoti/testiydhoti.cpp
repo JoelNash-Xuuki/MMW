@@ -16,24 +16,49 @@ string readFileIntoString(const string& path) {
   return string((istreambuf_iterator<char>(input_file)), istreambuf_iterator<char>());
 }
 
+class Instrument{
+  private:
+    Csound* csound; 
+  public:
+	Instrument(){
+	  csound = new Csound();
+	}
+
+    void  setOrc(){ 
+      string orcfile("orc/o.orc");
+	  string orc = readFileIntoString(orcfile);
+	  char * corc = new char [orc.length()+1];
+      strcpy(corc, orc.c_str());
+	  csound->CompileOrc(corc);
+	}
+
+    void setSco(){
+      string scofile("sco/a.sco");
+      string sco =  readFileIntoString(scofile);
+      char * csco = new char [sco.length()+1];
+      strcpy(csco, sco.c_str());
+      csound->ReadScore(csco);
+    }
+
+	void options(){
+	  csound->SetOption("-odac");
+	}
+
+    void play(){
+	  setOrc();
+	  setSco();
+	  options();
+	  csound->Start();
+      csound->Perform();	
+      delete csound;
+	}
+};
+
+
 int main(){
-  Csound* csound = new Csound();
-
-  string orcfile("o.orc");
-  string orc = readFileIntoString(orcfile);;
-  char * corc = new char [orc.length()+1];
-  strcpy(corc, orc.c_str());
-
-  string scofile("bass_snare.sco");
-  string sco =  readFileIntoString(scofile);
-  char * csco = new char [sco.length()+1];
-  strcpy(csco, sco.c_str());
-
-  csound->CompileOrc(corc);
-  csound->ReadScore(csco);
-  csound->Start();
-  csound->Perform();	
-  delete csound;
+  Instrument i = Instrument(); 
+  i.play();
+  
   return 0;
 }
 
