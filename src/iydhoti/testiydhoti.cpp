@@ -22,7 +22,7 @@ class Instrument{
     Csound* csound; 
 	string orc;
     string sco;
-	string output;
+	const char* output;
 
   void  setOrc(){ 
 	  string file(orc);
@@ -41,12 +41,14 @@ class Instrument{
     }
 
 	void options(){
-	  csound->SetOption("-odac");
+	  csound->SetOption(this->output);
 	}
 
   public:
 	CsoundPerformanceThread* perfThread; 
-	Instrument(string orc, string sco, string output){
+	Instrument(){}
+
+	Instrument(string orc, string sco, const char* output){
 	  csound = new Csound();
 	  this->orc= orc; 
 	  this->sco= sco;
@@ -70,9 +72,7 @@ class Instrument{
       perfThread = new CsoundPerformanceThread(csound); 
 	  perfThread->Play();
 	  while(perfThread->GetStatus() == 0);
-
 	}	  
-
 
     void stopThread(){
 	  delete csound;
@@ -80,15 +80,34 @@ class Instrument{
 	}
 };
 
+class Sound{
+  private:
+  Instrument snare;
+  Instrument basse;
+  Instrument mix;
+
+  public:
+  Sound(){
+    snare= Instrument("orc/o.orc", "sco/snare.sco", "-osnare.wav");
+    basse= Instrument("orc/o.orc", "sco/basse.sco", "-obasse.wav");
+  }
+  void perform(){
+    snare.play();
+    basse.play();
+  }
+
+  void playMix(){
+    mix= Instrument("orc/o.orc", "sco/mix.sco", "-odac");
+	mix.play();
+  }
+};
+
 
 int main(){
-  Instrument snare = Instrument("orc/o.orc", "sco/snare.sco", "a"); 
-  Instrument basse = Instrument("orc/o.orc", "sco/basse.sco", "a");
-  snare.playThread();
-  basse.playThread();
+  Sound s= Sound();
+  s.perform();
+  s.playMix();
 
-
-  
   return 0;
 }
 
