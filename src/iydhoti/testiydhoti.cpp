@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include "csound.hpp"
+#include "csPerfThread.hpp"
 
 using namespace std;
 
@@ -19,22 +20,26 @@ string readFileIntoString(const string& path) {
 class Instrument{
   private:
     Csound* csound; 
+	string orc;
+    string sco;
   public:
-	Instrument(){
+	Instrument(string orc, string sco, string outFile){
 	  csound = new Csound();
+	  this->orc= orc; 
+	  this->sco= sco;
 	}
 
     void  setOrc(){ 
-      string orcfile("orc/o.orc");
-	  string orc = readFileIntoString(orcfile);
+	  string file(orc);
+	  orc = readFileIntoString(file);
 	  char * corc = new char [orc.length()+1];
       strcpy(corc, orc.c_str());
 	  csound->CompileOrc(corc);
 	}
 
     void setSco(){
-      string scofile("sco/a.sco");
-      string sco =  readFileIntoString(scofile);
+      string scofile(sco);
+      sco =  readFileIntoString(scofile);
       char * csco = new char [sco.length()+1];
       strcpy(csco, sco.c_str());
       csound->ReadScore(csco);
@@ -44,20 +49,23 @@ class Instrument{
 	  csound->SetOption("-odac");
 	}
 
-    void play(){
+    Csound* play(){
 	  setOrc();
 	  setSco();
 	  options();
 	  csound->Start();
-      csound->Perform();	
-      delete csound;
+	  return csound;
 	}
 };
 
 
 int main(){
-  Instrument i = Instrument(); 
-  i.play();
+  Instrument snare = Instrument("orc/o.orc", "sco/snare.sco", "a"); 
+  Instrument basse = Instrument("orc/o.orc", "sco/basse.sco", "a");
+  CsoundPerformanceThread* snareThread = new CsoundPerformanceThread(snare.play());
+  CsoundPerformanceThread* basseThread = new CsoundPerformanceThread(basse.play());
+  snareThread->Play();
+
   
   return 0;
 }
