@@ -84,16 +84,19 @@ class Sound{
   private:
   Instrument snare;
   Instrument basse;
+  Instrument tone;
   Instrument mix;
 
   public:
   Sound(){
     snare= Instrument("orc/o.orc", "sco/snare.sco", "-osnare.wav");
     basse= Instrument("orc/o.orc", "sco/basse.sco", "-obasse.wav");
+	tone= Instrument("orc/o.orc", "sco/tone.sco", "-otone.wav");
   }
   void perform(){
     snare.play();
     basse.play();
+	tone.play();
   }
 
   void playMix(){
@@ -101,7 +104,6 @@ class Sound{
 	mix.play();
   }
 };
-
 
 int main(){
   Sound s= Sound();

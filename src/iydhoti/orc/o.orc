@@ -1,5 +1,5 @@
 sr	=	44100		
-ksmps	=	32
+ksmps	=	10
 nchnls	=	2
 
 gacmb	init	0
@@ -52,15 +52,16 @@ icmbsnd		= 	p37
 kpan 		line 	p38, p3, p39
 
 kpchbnd		linseg	iattPch, ipchAttLen*p3, idecPch, ipchDecLen*p3, isusPch, ipchSusLen*p3, irelPch, ipchRelLen*p3, iendPch
-aampenv		linseg	iattAmp, iattLen*p3, idecAmp, idecLen*p3, isusAmp, isusLen*p3, irelAmp, irelLen*p3, iendAmp
+kampenv		linseg	iattAmp, iattLen*p3, idecAmp, idecLen*p3, isusAmp, isusLen*p3, irelAmp, irelLen*p3, iendAmp
 
-adevenv		linseg	iattAmpFD, iattLenFD*p3, idecAmpFD, idecLenFD*p3, isusAmpFD, isusLenFD*p3, irelAmpFD, irelLenFD*p3, iendAmpFD
+kdevenv		linseg	iattAmpFD, iattLenFD*p3, idecAmpFD, idecLenFD*p3, isusAmpFD, isusLenFD*p3, irelAmpFD, irelLenFD*p3, iendAmpFD
 
-amodosc		oscili	(ilowndx+indxdiff*adevenv)*imodfreq, imodfreq, 1
-acarosc		oscili	imaxamp*aampenv, (kcarfreq*kpchbnd)+amodosc, 1
+kmodosc		oscili	(ilowndx+indxdiff*kdevenv)*imodfreq, imodfreq, 1
+acarosc		oscili	imaxamp*kampenv, (kcarfreq*kpchbnd)+kmodosc, 1
 adeclk 		linsegr 0, .004, 1, p3, 1, .05, 0.01
 
 		outs	(acarosc*kpan)*adeclk, (acarosc*(1-kpan))*adeclk
+	    ;outs acarosc, acarosc 
 garvb		=	garvb+(acarosc*irvbsnd)
 gacmb		=	gacmb+(acarosc*icmbsnd)
 			endin
