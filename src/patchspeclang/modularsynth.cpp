@@ -1,6 +1,8 @@
 #include <string>
 #include "modularsynth.hpp"
 #include <cstring>
+#include <iostream>
+#include <fstream>
 using namespace std;
 
 ModularSynth::ModularSynth(string name){
@@ -12,7 +14,7 @@ void ModularSynth::testMethod(){
 }
 
 void ModularSynth::runPatch(){
-  printOrc();
+  printOrc("patch.orc");
   printScore(10.0); 
 }
 
@@ -37,64 +39,61 @@ void ModularSynth::readMix(MixOut *mix, int count){
   scanf("%s %s", mix[count].outVar, mix[count].amplitude);
 }
 
-void ModularSynth::printOsc(OscMod osc){
+void ModularSynth::printOsc(OscMod osc, ofstream& orcFile){
   float oMin, oMax;
   float mo2;
-  printf("%s oscil ", osc.sigOut);
+  orcFile << osc.sigOut << " oscil ";
 
   if(!strcmp(osc.sigAm, "NONE")){
-    printf("1.0, ");
+    orcFile << "1.0, ";
   } else{
-    printf("%s ", osc.sigAm); 
+    orcFile << osc.sigAm << " "; 
   }
 
   if(!strcmp(osc.sigFm, "NONE")){
-    printf("%s, ", osc.frequency);
+    orcFile << osc.frequency << " ";
   } else{
-	printf("%s * (1.0 + %s), ", osc.frequency, osc.sigFm);
+    orcFile << osc.frequency << " * (1.0+ "<<osc.sigFm << "), ";
   }
 
   if(!strcmp(osc.waveForm, "SINE")){
-    printf("isine\n"); 
+    orcFile << "isine\n"; 
   }
   else if(!strcmp(osc.waveForm, "TRIANGLE")){
-    printf("itriangle\n");
+    orcFile << "itriangle\n";
   }
   else if(!strcmp(osc.waveForm, "SAWTOOTH")){
-    printf("isawtooth\n");
+    orcFile << "isawtooth\n";
   }
   else if(!strcmp(osc.waveForm, "SQUARE")){
-    printf("isquare\n");
+    orcFile << "isquare\n";
   }
   else if(!strcmp(osc.waveForm, "PULSE")){
-    printf("ipulse\n");
+    orcFile << "ipulse\n";
   }
   else {
     fprintf(stderr, "printOsc: %s is unknown"
 			"- using sine instead\n", osc.waveForm);
-	printf("isine\n");
+	orcFile << "isine\n";
   }
   sscanf(osc.oMin, "%f", &oMin);
   sscanf(osc.oMax, "%f", &oMax);
   if(oMin != -1.0 || oMax != 1.0){
     mo2= (oMax- oMin) / 2.0;
-    printf("%s = %s + (%f*%s + %f)\n",
-	  		osc.sigOut,
-  			osc.oMin,
-			mo2,
-			osc.sigOut,
-			mo2);
+    orcFile << osc.sigOut << "=" << osc.oMin << " + (" << mo2 << 
+    " * " << osc.sigOut << " + " << mo2 << ")\n";
   }
 }
 
-void ModularSynth::printMix(MixOut mix){
+void ModularSynth::printMix(MixOut mix, ofstream& orcFile){
   float amp;
   sscanf(mix.amplitude, "%f", &amp);
-  printf("kenv linseg 0, .05, %f, p3-0.1, %f, .05, 0\n",amp, amp);
-  printf("out (%s)*kenv\n", mix.outVar);
+  orcFile << "kenv linseg 0, .05, " << amp << 
+  ", p3-0.1," << amp << ", .05,0\n";
+  orcFile <<"out (" << mix.outVar << ")*kenv\n";
 }
 
-void ModularSynth::printOrc(void){
+void ModularSynth::printOrc(string file){
   OscMod *oscs;
   MixOut *mixes;
   int oscCount= 0;
@@ -105,16 +104,18 @@ void ModularSynth::printOrc(void){
   oscs= (OscMod *) malloc(MAXMODS * sizeof(OscMod));
   mixes= (MixOut *) malloc(MAXMODS * sizeof(MixOut));
 
-  printf("sr= 44100\n");
-  printf("kr= 4410\n");
-  printf("ksmps= 10\n");
-  printf("nchnls= 1\n\n");
-  printf("instr 1\n");
-  printf("isine= 1\n");
-  printf("itriangle= 2\n");
-  printf("isawtooth= 3\n");
-  printf("isquare= 4\n");
-  printf("ipulse= 5\n");
+  orcFile.open(file);
+  orcFile << "sr= 44100\n";
+  orcFile << "kr= 4410\n";
+  orcFile << "ksmps= 10\n";
+  orcFile << "nchnls= 1\n\n";
+  orcFile << "instr 1\n";
+  orcFile << "isine= 1\n";
+  orcFile << "itriangle= 2\n";
+  orcFile << "isawtooth= 3\n";
+  orcFile << "isquare= 4\n";
+  orcFile << "ipulse= 5\n";
+  orcFile << "instr 1\n";
 
   while(scanf("%s", moduleName) != EOF){
     if(! strcmp(moduleName, "OSC")){
@@ -126,18 +127,21 @@ void ModularSynth::printOrc(void){
 	}
   }
   for(i=0; i< oscCount; i++)
-    printOsc(oscs[i]);
+    printOsc(oscs[i], orcFile);
 
   for(i=0; i< mixCount; i++)
-	printMix(mixes[i]);
+    printMix(mixes[i], orcFile);
+
+  orcFile << "\tendin\n\n";
+
+  orcFile.close();
 }
 
 void ModularSynth::printScore(float dur){
-  printf("\tendin\n\n");
   printf("f1 0 8192 10 1;sine \n");
   printf("f2 0 8192 10 1 0 .111 0 .04 0 .02 0;tri\n");
   printf("f3 0 8192 10 1 .5 .333 .25 .2 .166 .142 .125;sawtth\n");
-  printf("f4 0 8192 10 1 0 .333 0 .2 0 .142 0 .111;square");
+  printf("f4 0 8192 10 1 0 .333 0 .2 0 .142 0 .111;square\n");
   printf("f5 0 8192 10 1 1 1 1 1 1 1 1 1 1 1 1 1;pulse\n");
   printf("i1 0 %f\n\n", dur);
   printf("e");

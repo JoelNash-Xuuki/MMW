@@ -2,6 +2,7 @@
 #define ModularSynth_H
 
 #include <string>
+#include <fstream>
 using namespace std;
 
 #define MODSYN_CHARS (128)
@@ -23,13 +24,14 @@ typedef struct {
 } OscMod;
 
 class ModularSynth{
-  public:
+  private:
+	ofstream orcFile;
 	bool wasRun; 
     void readOsc(OscMod *oscs, int count);
 	void readMix(MixOut *mix, int count);
-	void printMix(MixOut mix);
-	void printOsc(OscMod oscs);
-	void printOrc();
+	void printMix(MixOut mix, ofstream& orcFile);
+	void printOsc(OscMod osc, ofstream& orcFile);
+	void printOrc(string file);
 	void printScore(float dur);
   public:
 	ModularSynth(string name);
