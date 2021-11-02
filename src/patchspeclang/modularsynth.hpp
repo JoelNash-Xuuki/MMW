@@ -8,6 +8,11 @@ using namespace std;
 #define MAXMODS (256)
 
 typedef struct {
+  char outVar[MODSYN_CHARS];
+  char amplitude[MODSYN_CHARS];
+} MixOut;
+
+typedef struct {
   char frequency[MODSYN_CHARS];
   char sigOut[MODSYN_CHARS];
   char sigAm[MODSYN_CHARS];
@@ -21,10 +26,14 @@ class ModularSynth{
   public:
 	bool wasRun; 
     void readOsc(OscMod *oscs, int count);
+	void readMix(MixOut *mix, int count);
+	void printMix(MixOut mix);
 	void printOsc(OscMod oscs);
+	void printOrc();
+	void printScore(float dur);
   public:
 	ModularSynth(string name);
 	void testMethod();
-	void patch();
+	void runPatch();
 };
 # endif

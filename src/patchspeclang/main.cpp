@@ -5,7 +5,7 @@
 
 int main(int argc, char **argv){
   ModularSynth ms= ModularSynth("synth");
-  ms.patch();
+  ms.runPatch();
 
   return 0;
 }
