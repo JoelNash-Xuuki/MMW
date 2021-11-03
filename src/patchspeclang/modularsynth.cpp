@@ -4,20 +4,16 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-
 ModularSynth::ModularSynth(string name){
 	this->wasRun = false;
 }
-
 void ModularSynth::testMethod(){
   this->wasRun = true;
 }
-
 void ModularSynth::runPatch(){
   printOrc("patch.orc");
-  printScore(10.0); 
+  printScore(10.0, "patch.sco"); 
 }
-
 void ModularSynth::readOsc(OscMod *oscs, int count){
   scanf("%s %s %s %s %s %s %s",
 	  oscs[count].sigOut, 
@@ -34,11 +30,9 @@ void ModularSynth::readOsc(OscMod *oscs, int count){
     exit(1);
   }
 }
-
 void ModularSynth::readMix(MixOut *mix, int count){
   scanf("%s %s", mix[count].outVar, mix[count].amplitude);
 }
-
 void ModularSynth::printOsc(OscMod osc, ofstream& orcFile){
   float oMin, oMax;
   float mo2;
@@ -47,11 +41,11 @@ void ModularSynth::printOsc(OscMod osc, ofstream& orcFile){
   if(!strcmp(osc.sigAm, "NONE")){
     orcFile << "1.0, ";
   } else{
-    orcFile << osc.sigAm << " "; 
+    orcFile << osc.sigAm << ", "; 
   }
 
   if(!strcmp(osc.sigFm, "NONE")){
-    orcFile << osc.frequency << " ";
+    orcFile << osc.frequency << ", ";
   } else{
     orcFile << osc.frequency << " * (1.0+ "<<osc.sigFm << "), ";
   }
@@ -84,7 +78,6 @@ void ModularSynth::printOsc(OscMod osc, ofstream& orcFile){
     " * " << osc.sigOut << " + " << mo2 << ")\n";
   }
 }
-
 void ModularSynth::printMix(MixOut mix, ofstream& orcFile){
   float amp;
   sscanf(mix.amplitude, "%f", &amp);
@@ -92,7 +85,6 @@ void ModularSynth::printMix(MixOut mix, ofstream& orcFile){
   ", p3-0.1," << amp << ", .05,0\n";
   orcFile <<"out (" << mix.outVar << ")*kenv\n";
 }
-
 void ModularSynth::printOrc(string file){
   OscMod *oscs;
   MixOut *mixes;
@@ -109,13 +101,12 @@ void ModularSynth::printOrc(string file){
   orcFile << "kr= 4410\n";
   orcFile << "ksmps= 10\n";
   orcFile << "nchnls= 1\n\n";
-  orcFile << "instr 1\n";
+  orcFile << "\tinstr 1\n";
   orcFile << "isine= 1\n";
   orcFile << "itriangle= 2\n";
   orcFile << "isawtooth= 3\n";
   orcFile << "isquare= 4\n";
   orcFile << "ipulse= 5\n";
-  orcFile << "instr 1\n";
 
   while(scanf("%s", moduleName) != EOF){
     if(! strcmp(moduleName, "OSC")){
@@ -136,14 +127,13 @@ void ModularSynth::printOrc(string file){
 
   orcFile.close();
 }
-
-void ModularSynth::printScore(float dur){
-  printf("f1 0 8192 10 1;sine \n");
-  printf("f2 0 8192 10 1 0 .111 0 .04 0 .02 0;tri\n");
-  printf("f3 0 8192 10 1 .5 .333 .25 .2 .166 .142 .125;sawtth\n");
-  printf("f4 0 8192 10 1 0 .333 0 .2 0 .142 0 .111;square\n");
-  printf("f5 0 8192 10 1 1 1 1 1 1 1 1 1 1 1 1 1;pulse\n");
-  printf("i1 0 %f\n\n", dur);
-  printf("e");
-
+void ModularSynth::printScore(float dur, string file){
+  orcFile.open(file);
+  orcFile << "f1 0 8192 10 1;sine \n";
+  orcFile << "f2 0 8192 10 1 0 .111 0 .04 0 .02 0;tri\n";
+  orcFile << "f3 0 8192 10 1 .5 .333 .25 .2 .166 .142 .125;sawtth\n";
+  orcFile << "f4 0 8192 10 1 0 .333 0 .2 0 .142 0 .111;square\n";
+  orcFile << "f5 0 8192 10 1 1 1 1 1 1 1 1 1 1 1 1 1;pulse\n";
+  orcFile << "i1 0 " <<  dur << endl;
+  orcFile << "e";
 }
