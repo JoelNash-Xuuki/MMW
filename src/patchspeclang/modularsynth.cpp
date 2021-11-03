@@ -67,8 +67,8 @@ void ModularSynth::printOsc(OscMod osc, ofstream& orcFile){
   }
   else {
     fprintf(stderr, "printOsc: %s is unknown"
-			"- using sine instead\n", osc.waveForm);
-	orcFile << "isine\n";
+    		"- using sine instead\n", osc.waveForm);
+    orcFile << "isine\n";
   }
   sscanf(osc.oMin, "%f", &oMin);
   sscanf(osc.oMax, "%f", &oMax);
@@ -97,6 +97,7 @@ void ModularSynth::printOrc(string file){
   mixes= (MixOut *) malloc(MAXMODS * sizeof(MixOut));
 
   orcFile.open(file);
+
   orcFile << "sr= 44100\n";
   orcFile << "kr= 4410\n";
   orcFile << "ksmps= 10\n";
@@ -117,6 +118,9 @@ void ModularSynth::printOrc(string file){
 	  fprintf(stderr, "%s is an unknown module\n", moduleName);
 	}
   }
+
+  initialiseGlobals(oscs, oscCount, orcFile);
+  
   for(i=0; i< oscCount; i++)
     printOsc(oscs[i], orcFile);
 
@@ -136,4 +140,10 @@ void ModularSynth::printScore(float dur, string file){
   orcFile << "f5 0 8192 10 1 1 1 1 1 1 1 1 1 1 1 1 1;pulse\n";
   orcFile << "i1 0 " <<  dur << endl;
   orcFile << "e";
+}
+void ModularSynth::initialiseGlobals(OscMod *oscs, int oscCount, ofstream& orcFile){
+  int i; 
+  for(i= 0; i < oscCount; i++){
+    orcFile << oscs[i].sigOut << " init 0.0\n";
+  }
 }

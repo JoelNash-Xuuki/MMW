@@ -18,7 +18,6 @@ typedef struct {
   char oMin[MODSYN_CHARS];
   char oMax[MODSYN_CHARS];
 } OscMod;
-
 class ModularSynth{
   private:
 	ofstream orcFile;
@@ -29,6 +28,7 @@ class ModularSynth{
 	void printOsc(OscMod osc, ofstream& orcFile);
 	void printOrc(string file);
 	void printScore(float dur, string file);
+	void initialiseGlobals(OscMod *oscs, int oscCount, ofstream& file);
   public:
 	ModularSynth(string name);
 	void testMethod();
