@@ -1,0 +1,154 @@
+g++ ../tests/Sound.cpp ../tests/SoundTest.cpp ../tests/RunTests.cpp ../tests/Interface.cpp ../tests/Tool.cpp ../tests/Rec.cpp ../tests/Mix.cpp -lcppunit -o ../bin/testsound
+../tests/Rec.cpp: Dans le constructeur « Rec::Rec() »:
+../tests/Rec.cpp:9:11: erreur: no match for « operator= » (operand types are « const string » {aka « const std::__cxx11::basic_string<char> »} and « std::string » {aka « std::__cxx11::basic_string<char> »})
+    9 |     orc = orcC;
+      |           ^~~~
+Dans le fichier inclus depuis /usr/include/c++/11.1.0/string:55,
+                 depuis /usr/include/c++/11.1.0/bits/locale_classes.h:40,
+                 depuis /usr/include/c++/11.1.0/bits/ios_base.h:41,
+                 depuis /usr/include/c++/11.1.0/ios:42,
+                 depuis /usr/include/c++/11.1.0/ostream:38,
+                 depuis /usr/include/c++/11.1.0/iostream:39,
+                 depuis ../tests/Rec.hpp:2,
+                 depuis ../tests/Rec.cpp:1:
+/usr/include/c++/11.1.0/bits/basic_string.h:785:8: note: candidat : « template<class _Tp> std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_If_sv<_Tp, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&> std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(const _Tp&) [avec _Tp = _Tp; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] »
+  785 |        operator=(const _Tp& __svt)
+      |        ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:785:8: note:   la déduction/substitution de l'argument du patron a échoué:
+Dans le fichier inclus depuis /usr/include/c++/11.1.0/bits/move.h:57,
+                 depuis /usr/include/c++/11.1.0/bits/nested_exception.h:40,
+                 depuis /usr/include/c++/11.1.0/exception:148,
+                 depuis /usr/include/c++/11.1.0/ios:39,
+                 depuis /usr/include/c++/11.1.0/ostream:38,
+                 depuis /usr/include/c++/11.1.0/iostream:39,
+                 depuis ../tests/Rec.hpp:2,
+                 depuis ../tests/Rec.cpp:1:
+/usr/include/c++/11.1.0/type_traits: Dans la substitution de « template<bool _Cond, class _Tp> using enable_if_t = typename std::enable_if::type [avec bool _Cond = false; _Tp = std::__cxx11::basic_string<char>&] » :
+/usr/include/c++/11.1.0/bits/basic_string.h:117:8:   requis par la substitution de « template<class _CharT, class _Traits, class _Alloc> template<class _Tp, class _Res> using _If_sv = std::enable_if_t<std::__and_<std::is_convertible<const _Tp&, std::basic_string_view<_CharT, _Traits> >, std::__not_<std::is_convertible<const _Tp*, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>*> >, std::__not_<std::is_convertible<const _Tp&, const _CharT*> > >::value, _Res> [avec _Tp = std::__cxx11::basic_string<char>; _Res = std::__cxx11::basic_string<char>&; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] »
+/usr/include/c++/11.1.0/bits/basic_string.h:785:8:   requis par la substitution de « template<class _Tp> std::__cxx11::basic_string<char>::_If_sv<_Tp, std::__cxx11::basic_string<char>&> std::__cxx11::basic_string<char>::operator=<_Tp>(const _Tp&) [avec _Tp = std::__cxx11::basic_string<char>] »
+../tests/Rec.cpp:9:11:   requis depuis ici
+/usr/include/c++/11.1.0/type_traits:2514:11: erreur: pas de type nommé « type » dans « struct std::enable_if<false, std::__cxx11::basic_string<char>&> »
+ 2514 |     using enable_if_t = typename enable_if<_Cond, _Tp>::type;
+      |           ^~~~~~~~~~~
+Dans le fichier inclus depuis /usr/include/c++/11.1.0/string:55,
+                 depuis /usr/include/c++/11.1.0/bits/locale_classes.h:40,
+                 depuis /usr/include/c++/11.1.0/bits/ios_base.h:41,
+                 depuis /usr/include/c++/11.1.0/ios:42,
+                 depuis /usr/include/c++/11.1.0/ostream:38,
+                 depuis /usr/include/c++/11.1.0/iostream:39,
+                 depuis ../tests/Rec.hpp:2,
+                 depuis ../tests/Rec.cpp:1:
+/usr/include/c++/11.1.0/bits/basic_string.h:665:7: note: candidat : « std::__cxx11::basic_string<_CharT, _Traits, _Alloc>& std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) [avec _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] » (concordance proche)
+  665 |       operator=(const basic_string& __str)
+      |       ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:665:7: note:   passer « const string* » {aka « const std::__cxx11::basic_string<char>* »} comme argument « this » élimine les qualificatifs
+/usr/include/c++/11.1.0/bits/basic_string.h:675:7: note: candidat : « std::__cxx11::basic_string<_CharT, _Traits, _Alloc>& std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(const _CharT*) [avec _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] »
+  675 |       operator=(const _CharT* __s)
+      |       ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:675:31: note:   pas de conversion connue pour convertir l'argument 1 depuis « std::string » {aka « std::__cxx11::basic_string<char> »} vers « const char* »
+  675 |       operator=(const _CharT* __s)
+      |                 ~~~~~~~~~~~~~~^~~
+/usr/include/c++/11.1.0/bits/basic_string.h:686:7: note: candidat : « std::__cxx11::basic_string<_CharT, _Traits, _Alloc>& std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(_CharT) [avec _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] »
+  686 |       operator=(_CharT __c)
+      |       ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:686:24: note:   pas de conversion connue pour convertir l'argument 1 depuis « std::string » {aka « std::__cxx11::basic_string<char> »} vers « char »
+  686 |       operator=(_CharT __c)
+      |                 ~~~~~~~^~~
+/usr/include/c++/11.1.0/bits/basic_string.h:703:7: note: candidat : « std::__cxx11::basic_string<_CharT, _Traits, _Alloc>& std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&&) [avec _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] » (concordance proche)
+  703 |       operator=(basic_string&& __str)
+      |       ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:703:7: note:   la conversion de l'argument 1 serait mal formée:
+../tests/Rec.cpp:9:11: erreur: impossible de lier la référence d'une r-valeur de type « std::__cxx11::basic_string<char>&& » à une l-valeur de type « std::string » {aka « std::__cxx11::basic_string<char> »}
+    9 |     orc = orcC;
+      |           ^~~~
+Dans le fichier inclus depuis /usr/include/c++/11.1.0/string:55,
+                 depuis /usr/include/c++/11.1.0/bits/locale_classes.h:40,
+                 depuis /usr/include/c++/11.1.0/bits/ios_base.h:41,
+                 depuis /usr/include/c++/11.1.0/ios:42,
+                 depuis /usr/include/c++/11.1.0/ostream:38,
+                 depuis /usr/include/c++/11.1.0/iostream:39,
+                 depuis ../tests/Rec.hpp:2,
+                 depuis ../tests/Rec.cpp:1:
+/usr/include/c++/11.1.0/bits/basic_string.h:771:7: note: candidat : « std::__cxx11::basic_string<_CharT, _Traits, _Alloc>& std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(std::initializer_list<_Tp>) [avec _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] »
+  771 |       operator=(initializer_list<_CharT> __l)
+      |       ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:771:42: note:   pas de conversion connue pour convertir l'argument 1 depuis « std::string » {aka « std::__cxx11::basic_string<char> »} vers « std::initializer_list<char> »
+  771 |       operator=(initializer_list<_CharT> __l)
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+../tests/Mix.cpp: Dans le constructeur « Mix::Mix() »:
+../tests/Mix.cpp:7:11: erreur: no match for « operator= » (operand types are « const string » {aka « const std::__cxx11::basic_string<char> »} and « std::string » {aka « std::__cxx11::basic_string<char> »})
+    7 |     orc = orcC;
+      |           ^~~~
+Dans le fichier inclus depuis /usr/include/c++/11.1.0/string:55,
+                 depuis /usr/include/c++/11.1.0/bits/locale_classes.h:40,
+                 depuis /usr/include/c++/11.1.0/bits/ios_base.h:41,
+                 depuis /usr/include/c++/11.1.0/ios:42,
+                 depuis /usr/include/c++/11.1.0/ostream:38,
+                 depuis /usr/include/c++/11.1.0/iostream:39,
+                 depuis ../tests/Mix.hpp:2,
+                 depuis ../tests/Mix.cpp:1:
+/usr/include/c++/11.1.0/bits/basic_string.h:785:8: note: candidat : « template<class _Tp> std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_If_sv<_Tp, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&> std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(const _Tp&) [avec _Tp = _Tp; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] »
+  785 |        operator=(const _Tp& __svt)
+      |        ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:785:8: note:   la déduction/substitution de l'argument du patron a échoué:
+Dans le fichier inclus depuis /usr/include/c++/11.1.0/bits/move.h:57,
+                 depuis /usr/include/c++/11.1.0/bits/nested_exception.h:40,
+                 depuis /usr/include/c++/11.1.0/exception:148,
+                 depuis /usr/include/c++/11.1.0/ios:39,
+                 depuis /usr/include/c++/11.1.0/ostream:38,
+                 depuis /usr/include/c++/11.1.0/iostream:39,
+                 depuis ../tests/Mix.hpp:2,
+                 depuis ../tests/Mix.cpp:1:
+/usr/include/c++/11.1.0/type_traits: Dans la substitution de « template<bool _Cond, class _Tp> using enable_if_t = typename std::enable_if::type [avec bool _Cond = false; _Tp = std::__cxx11::basic_string<char>&] » :
+/usr/include/c++/11.1.0/bits/basic_string.h:117:8:   requis par la substitution de « template<class _CharT, class _Traits, class _Alloc> template<class _Tp, class _Res> using _If_sv = std::enable_if_t<std::__and_<std::is_convertible<const _Tp&, std::basic_string_view<_CharT, _Traits> >, std::__not_<std::is_convertible<const _Tp*, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>*> >, std::__not_<std::is_convertible<const _Tp&, const _CharT*> > >::value, _Res> [avec _Tp = std::__cxx11::basic_string<char>; _Res = std::__cxx11::basic_string<char>&; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] »
+/usr/include/c++/11.1.0/bits/basic_string.h:785:8:   requis par la substitution de « template<class _Tp> std::__cxx11::basic_string<char>::_If_sv<_Tp, std::__cxx11::basic_string<char>&> std::__cxx11::basic_string<char>::operator=<_Tp>(const _Tp&) [avec _Tp = std::__cxx11::basic_string<char>] »
+../tests/Mix.cpp:7:11:   requis depuis ici
+/usr/include/c++/11.1.0/type_traits:2514:11: erreur: pas de type nommé « type » dans « struct std::enable_if<false, std::__cxx11::basic_string<char>&> »
+ 2514 |     using enable_if_t = typename enable_if<_Cond, _Tp>::type;
+      |           ^~~~~~~~~~~
+Dans le fichier inclus depuis /usr/include/c++/11.1.0/string:55,
+                 depuis /usr/include/c++/11.1.0/bits/locale_classes.h:40,
+                 depuis /usr/include/c++/11.1.0/bits/ios_base.h:41,
+                 depuis /usr/include/c++/11.1.0/ios:42,
+                 depuis /usr/include/c++/11.1.0/ostream:38,
+                 depuis /usr/include/c++/11.1.0/iostream:39,
+                 depuis ../tests/Mix.hpp:2,
+                 depuis ../tests/Mix.cpp:1:
+/usr/include/c++/11.1.0/bits/basic_string.h:665:7: note: candidat : « std::__cxx11::basic_string<_CharT, _Traits, _Alloc>& std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) [avec _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] » (concordance proche)
+  665 |       operator=(const basic_string& __str)
+      |       ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:665:7: note:   passer « const string* » {aka « const std::__cxx11::basic_string<char>* »} comme argument « this » élimine les qualificatifs
+/usr/include/c++/11.1.0/bits/basic_string.h:675:7: note: candidat : « std::__cxx11::basic_string<_CharT, _Traits, _Alloc>& std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(const _CharT*) [avec _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] »
+  675 |       operator=(const _CharT* __s)
+      |       ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:675:31: note:   pas de conversion connue pour convertir l'argument 1 depuis « std::string » {aka « std::__cxx11::basic_string<char> »} vers « const char* »
+  675 |       operator=(const _CharT* __s)
+      |                 ~~~~~~~~~~~~~~^~~
+/usr/include/c++/11.1.0/bits/basic_string.h:686:7: note: candidat : « std::__cxx11::basic_string<_CharT, _Traits, _Alloc>& std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(_CharT) [avec _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] »
+  686 |       operator=(_CharT __c)
+      |       ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:686:24: note:   pas de conversion connue pour convertir l'argument 1 depuis « std::string » {aka « std::__cxx11::basic_string<char> »} vers « char »
+  686 |       operator=(_CharT __c)
+      |                 ~~~~~~~^~~
+/usr/include/c++/11.1.0/bits/basic_string.h:703:7: note: candidat : « std::__cxx11::basic_string<_CharT, _Traits, _Alloc>& std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&&) [avec _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] » (concordance proche)
+  703 |       operator=(basic_string&& __str)
+      |       ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:703:7: note:   la conversion de l'argument 1 serait mal formée:
+../tests/Mix.cpp:7:11: erreur: impossible de lier la référence d'une r-valeur de type « std::__cxx11::basic_string<char>&& » à une l-valeur de type « std::string » {aka « std::__cxx11::basic_string<char> »}
+    7 |     orc = orcC;
+      |           ^~~~
+Dans le fichier inclus depuis /usr/include/c++/11.1.0/string:55,
+                 depuis /usr/include/c++/11.1.0/bits/locale_classes.h:40,
+                 depuis /usr/include/c++/11.1.0/bits/ios_base.h:41,
+                 depuis /usr/include/c++/11.1.0/ios:42,
+                 depuis /usr/include/c++/11.1.0/ostream:38,
+                 depuis /usr/include/c++/11.1.0/iostream:39,
+                 depuis ../tests/Mix.hpp:2,
+                 depuis ../tests/Mix.cpp:1:
+/usr/include/c++/11.1.0/bits/basic_string.h:771:7: note: candidat : « std::__cxx11::basic_string<_CharT, _Traits, _Alloc>& std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::operator=(std::initializer_list<_Tp>) [avec _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>] »
+  771 |       operator=(initializer_list<_CharT> __l)
+      |       ^~~~~~~~
+/usr/include/c++/11.1.0/bits/basic_string.h:771:42: note:   pas de conversion connue pour convertir l'argument 1 depuis « std::string » {aka « std::__cxx11::basic_string<char> »} vers « std::initializer_list<char> »
+  771 |       operator=(initializer_list<_CharT> __l)
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+make: *** [Makefile:12 : testsound] Erreur 1

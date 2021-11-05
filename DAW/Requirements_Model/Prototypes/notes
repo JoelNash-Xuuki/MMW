@@ -1,0 +1,3 @@
+turn jack on
+
+csound -odac -iadc0 -B512 -b128 -+rtaudio=jack 
