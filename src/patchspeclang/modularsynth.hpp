@@ -32,17 +32,22 @@ class ModularSynth{
     void readOsc(OscMod *oscs, int count);
     void readNoise(NoiseMod *unit, int count);
 	void readMix(MixOut *mix, int count);
-	void printOsc(OscMod osc, ofstream& orcFile);
-	void printNoise(NoiseMod noise, ofstream& orcFile);
-	void printMix(MixOut mix, ofstream& orcFile);
-	void printOrc(string file);
-	void printScore(float dur, string file);
-
 	void initialiseGlobals(OscMod *oscs, 
 						   int oscCount, 
 					       NoiseMod *noises, 
 						   int noiseCount, 
+						   NoiseMod *sahs, 
+						   int sahCount,
 						   ofstream& orcFile);
+	void printOrc(string file);
+	void printOsc(OscMod osc, ofstream& orcFile);
+	void printNoise(NoiseMod noise, ofstream& orcFile);
+    void printSah(NoiseMod noise, ofstream& orcFile);
+	void printMix(MixOut mix, ofstream& orcFile);
+
+	void printScore(float dur, string file);
+
+	
   public:
 	ModularSynth(string name);
 	void testMethod();
