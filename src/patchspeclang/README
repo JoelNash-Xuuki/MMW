@@ -1,0 +1,8 @@
+Run the commands:
+make
+
+./modularsynth < patch 
+
+csound -odac patch.orc patch.sco
+
+
