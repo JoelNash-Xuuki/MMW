@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <cstring>
 
 
 using namespace std; 
@@ -26,19 +27,29 @@ double calculateFreq(int noteNo){
 }
 
 int main(){
-  char note;
+  string file("test.note");
+  string note = readFileIntoString(file);
+
+
   int noteNo;
-
-  note= 'c';
-
-  switch('c'){
-    case 'c':
-      noteNo= 48;
-	  break;
-    default:
-      printf("Error, not a note");
+  int i= 0;
+  while(note[i] != '\n'){
+    switch(note[i]){
+      case 'c':
+	    if(note[i+1] == '\''){
+		  noteNo= (48+12);
+		  i++;
+		}
+		else
+          noteNo= 48;
+        cout << calculateFreq(noteNo) << endl;
+        break;
+      default:
+        cout << "Error, " << note[i] << "not a note" << endl;
+    }
+    i++;
   }
-  cout << calculateFreq(48) << endl;
+  
   return 0;
 } 
 
