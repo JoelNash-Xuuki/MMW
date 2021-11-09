@@ -40,7 +40,7 @@ class Instrument{
       csound->ReadScore(csco);
     }
 
-	void options(){
+  void options(){
 	  csound->SetOption(this->output);
 	}
 
