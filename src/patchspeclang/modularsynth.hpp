@@ -56,7 +56,10 @@ class ModularSynth{
     void printVcf(VcfMod vcf, ofstream& orcFile);
 	void printMix(MixOut mix, ofstream& orcFile);
 
-	void printScore(float dur, string file);
+    string readFileIntoString(const string& path);
+    int asciiToMidi(char note);
+    double calculateFreq(int noteNo);
+	void printScore(string file);
 
 	
   public:

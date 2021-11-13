@@ -1,9 +1,13 @@
 #include <string>
+#include <math.h>
 #include "modularsynth.hpp"
 #include <cstring>
 #include <iostream>
 #include <fstream>
+#include <regex>
+
 using namespace std;
+
 ModularSynth::ModularSynth(string name){
 	this->wasRun = false;
 }
@@ -12,7 +16,7 @@ void ModularSynth::testMethod(){
 }
 void ModularSynth::runPatch(){
   printOrc("patch.orc");
-  printScore(10.0, "patch.sco"); 
+  printScore("patch.sco"); 
 }
 void ModularSynth::readOsc(OscMod *oscs, int count){
   scanf("%s %s %s %s %s %s %s",
@@ -134,14 +138,58 @@ void ModularSynth::printOrc(string fileName){
   orcFile.close();
 }
 
-void ModularSynth::printScore(float dur, string file){
+string ModularSynth::readFileIntoString(const string& path) {
+  ifstream input_file(path);
+  if (!input_file.is_open()) {
+    cerr << "Could not open the file - '"
+      << path << "'" << endl;
+   exit(EXIT_FAILURE);
+  }
+  return string((istreambuf_iterator<char>(input_file)), 
+  		 istreambuf_iterator<char>());
+}
+
+int ModularSynth::asciiToMidi(char note){
+  return note - 39; 
+}
+
+double ModularSynth::calculateFreq(int noteNo){
+  double freq;
+  double semitoneRatio= pow(2, 1./12.0);
+  double c4= 220.0 * pow(semitoneRatio, 3);
+  double c0= c4 * pow(0.5, 5);
+  return freq= c0 * pow(semitoneRatio, noteNo);
+}
+
+void ModularSynth::printScore(string file){
+  double freq;
+  bool octDown;
+  double startTime= 0;
   orcFile.open(file);
+  string notes= readFileIntoString("test.note");
+  double duration= 0.25;
+
   orcFile << "f1 0 8192 10 1;sine \n";
   orcFile << "f2 0 8192 10 1 0 .111 0 .04 0 .02 0;tri\n";
   orcFile << "f3 0 8192 10 1 .5 .333 .25 .2 .166 .142 .125;sawtth\n";
   orcFile << "f4 0 8192 10 1 0 .333 0 .2 0 .142 0 .111;square\n";
   orcFile << "f5 0 8192 10 1 1 1 1 1 1 1 1 1 1 1 1 1;pulse\n";
-  orcFile << "i1 0 " <<  dur << endl;
+  orcFile << "t0 76" << endl;
+
+  for(int i= 0; i < notes.length(); i++){
+    if(notes[i] > 96 && notes[i] < 104 ){
+      freq= calculateFreq(asciiToMidi(notes[i]));
+      if(notes[i+1] == ',' && notes[i+2] == ' ')
+	    octDown= true;
+
+      if(octDown)
+	   freq /= 2;
+
+	  orcFile << "i1 "<< startTime << " " <<  duration << " " << freq << endl;
+      startTime += 4;
+	}
+    
+  }
   orcFile << "e";
 }
 
