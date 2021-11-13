@@ -163,7 +163,7 @@ double ModularSynth::calculateFreq(int noteNo){
 
 void ModularSynth::printScore(string file){
   double freq;
-  bool octDown;
+  bool octDownOne, octDownTwo;
   double startTime= 0;
   orcFile.open(file);
   string notes= readFileIntoString("test.note");
@@ -179,11 +179,19 @@ void ModularSynth::printScore(string file){
   for(int i= 0; i < notes.length(); i++){
     if(notes[i] > 96 && notes[i] < 104 ){
       freq= calculateFreq(asciiToMidi(notes[i]));
-      if(notes[i+1] == ',' && notes[i+2] == ' ')
-	    octDown= true;
+      if(notes[i+1] == ',' && notes[i+2] == ' '){
+	    octDownOne= true;
+        octDownTwo= false;
+	  }
+      else if(notes[i+1] == ',' && notes[i+2] == ','){
+		octDownOne= false;
+        octDownTwo= true;
+	  }
 
-      if(octDown)
-	   freq /= 2;
+      if(octDownOne && !octDownTwo)
+	   freq /= 2.;
+	  else if(!octDownOne && octDownTwo)
+        freq /= 4.;
 
 	  orcFile << "i1 "<< startTime << " " <<  duration << " " << freq << endl;
       startTime += 4;
