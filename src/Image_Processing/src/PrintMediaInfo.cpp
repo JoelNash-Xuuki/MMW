@@ -8,95 +8,88 @@
  * Frame - a decoded raw frame (to be encoded or filtered).
  */
 
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
-#include <inttypes.h>
+//#include <libavcodec/avcodec.h>
+extern "C"{
+  #include <libavformat/avformat.h>
+  #include <stdio.h>
+}
 
-static int decode_packet(AVPacket *pPacket, AVCodecContext *pCodecContext, AVFrame *pFrame);
-static void save_gray_frame(unsigned char *buf, int wrap, int xsize, int ysize, char *filename);
+#include <iostream>
+using namespace std;
 
-class Video{
+class Media{
   private: 
-  AVFormatContext *pFormatContext;
+  AVFormatContext *formatContext= NULL;
+
+  AVCodec *pCodec = NULL;
+  AVCodecParameters *pCodecParameters =  NULL;
+  int video_stream_index = -1;
 
   public:
-  Video(int argc, const char *argv[]){
+  Media(int argc, const char *argv[]){
     if (argc < 2) {
-      printf("You need to specify a media file.\n");
+      cout << "usage: " << argv[0] << " input_file" << endl;
     }
-    logging("initializing all the containers, codecs and protocols.");
 
-//	*pFormatContext= avformat_alloc_context();
+    formatContext= avformat_alloc_context();
+    if (!formatContext)
+      cout << "formatContext ERROR" << endl;
+
+    if (avformat_open_input(&formatContext, 
+							argv[1], NULL, NULL) != 0)
+	  cout << "Can't open file" << endl;
+
+    printf("format: %s,\n duration: %lld us,\n bit_rate %lld\n", 
+			formatContext->iformat->name, 
+			formatContext->duration, 
+			formatContext->bit_rate);
+
+    if (avformat_find_stream_info(formatContext,  NULL) < 0) {
+      cout << "ERROR could not get the stream info" << endl;
+    }
+
+    for (int i = 0; i < formatContext->nb_streams; i++){
+	  AVCodecParameters *pLocalCodecParameters =  NULL;
+      pLocalCodecParameters = formatContext->streams[i]->codecpar;
+      printf("AVStream->time_base before open coded %d/%d \n", 
+        formatContext->streams[i]->time_base.num, 
+	    formatContext->streams[i]->time_base.den);
+
+      printf("AVStream->r_frame_rate before open coded %d/%d\n", 	
+	    formatContext->streams[i]->r_frame_rate.num, 
+		formatContext->streams[i]->r_frame_rate.den);
+
+	  printf("AVStream->start_time %d\n", formatContext->streams[i]->start_time);
+      printf("AVStream->duration %d\n", formatContext->streams[i]->duration);
+
+	  AVCodec *pLocalCodec = NULL;
+      pLocalCodec = avcodec_find_decoder(pLocalCodecParameters->codec_id);
+
+	  if (pLocalCodec==NULL) {
+        printf("ERROR unsupported codec!");
+        continue;
+      }
+
+	  if (pLocalCodecParameters->codec_type == AVMEDIA_TYPE_VIDEO) {
+        if (video_stream_index == -1) {
+          video_stream_index = i;
+          pCodec = pLocalCodec;
+          pCodecParameters = pLocalCodecParameters;
+        }
+		printf("Video Codec: resolution %d x %d", 
+          pLocalCodecParameters->width, 
+	      pLocalCodecParameters->height);
+  	  }
+	}  
   }
-
-  void logging(const char *fmt, ...){
-    va_list args;
-    fprintf( stderr, "LOG: " );
-    va_start( args, fmt );
-    vfprintf( stderr, fmt, args );
-    va_end( args );
-    fprintf( stderr, "\n" );
-  }
-
 };
 
 int main(int argc, const char *argv[]){
-  Video v = Video(argc, argv);
-  
+  Media m = Media(argc, argv);
+  return 0;
+}
 
-  
-  //if (!pFormatContext) {
-  //  logging("ERROR could not allocate memory for Format Context");
-  //  return -1;
-  //}
 
-  //logging("opening the input file (%s) and loading format (container) header", argv[1]);
-
-  //if (avformat_open_input(&pFormatContext, argv[1], NULL, NULL) != 0) {
-  //  logging("ERROR could not open the file");
-  //  return -1;
-  //}
-
-  //logging("format %s, duration %lld us, bit_rate %lld", pFormatContext->iformat->name, pFormatContext->duration, pFormatContext->bit_rate);
-  //logging("finding stream info from format");
-
-  //if (avformat_find_stream_info(pFormatContext,  NULL) < 0) {
-  //  logging("ERROR could not get the stream info");
-  //  return -1;
-  //}
-
-  //AVCodec *pCodec = NULL;
-  //AVCodecParameters *pCodecParameters =  NULL;
-  //int video_stream_index = -1;
-
-  //for (int i = 0; i < pFormatContext->nb_streams; i++){
-  //  AVCodecParameters *pLocalCodecParameters =  NULL;
-  //  pLocalCodecParameters = pFormatContext->streams[i]->codecpar;
-  //  logging("AVStream->time_base before open coded %d/%d", pFormatContext->streams[i]->time_base.num, pFormatContext->streams[i]->time_base.den);
-  //  logging("AVStream->r_frame_rate before open coded %d/%d", pFormatContext->streams[i]->r_frame_rate.num, pFormatContext->streams[i]->r_frame_rate.den);
-  //  logging("AVStream->start_time %" PRId64, pFormatContext->streams[i]->start_time);
-  //  logging("AVStream->duration %" PRId64, pFormatContext->streams[i]->duration);
-  //  logging("finding the proper decoder (CODEC)");
-  //  AVCodec *pLocalCodec = NULL;
-  //  pLocalCodec = avcodec_find_decoder(pLocalCodecParameters->codec_id);
-
-  //  if (pLocalCodec==NULL) {
-  //    logging("ERROR unsupported codec!");
-  //    continue;
-  //  }
-
-  //  if (pLocalCodecParameters->codec_type == AVMEDIA_TYPE_VIDEO) {
-  //    if (video_stream_index == -1) {
-  //      video_stream_index = i;
-  //      pCodec = pLocalCodec;
-  //      pCodecParameters = pLocalCodecParameters;
-  //    }
-
-  //    logging("Video Codec: resolution %d x %d", pLocalCodecParameters->width, pLocalCodecParameters->height);
   //  } else if (pLocalCodecParameters->codec_type == AVMEDIA_TYPE_AUDIO) {
   //    logging("Audio Codec: %d channels, sample rate %d", pLocalCodecParameters->channels, pLocalCodecParameters->sample_rate);
   //  }
@@ -157,8 +150,7 @@ int main(int argc, const char *argv[]){
   //av_packet_free(&pPacket);
   //av_frame_free(&pFrame);
   //avcodec_free_context(&pCodecContext);
-  return 0;
-}
+
 
 
 //

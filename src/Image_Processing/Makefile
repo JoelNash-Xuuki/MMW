@@ -1,11 +1,10 @@
 #MAGICK		= `Magick++-config --cppflags --cxxflags --ldflags --libs`
 #DRAW		= Draw/Draw.cpp
 #FRAMES		= Handle_Frames/frames.cpp
-VIDEO		= src/PrintMediaInfo.cpp
+VIDEO		= src/PrintMediaInfo.cpp 
 LIBAV		= -lavcodec -lavformat -lavfilter -lavdevice -lswresample -lswscale -lavutil
 #IMAGE		= prog.cpp
 CC			= g++
-#CC			= gcc
 
 
 #test_draw: $(DRAW) 
@@ -18,4 +17,5 @@ CC			= g++
 #	g++ -o image $(IMAGE) $(MAGICK)
 
 printmediainfo: $(VIDEO)
-	gcc -o printmediainfo $(LIBAV) $(VIDEO)
+	$(CC) -o printmediainfo $(LIBAV) $(VIDEO)
+
