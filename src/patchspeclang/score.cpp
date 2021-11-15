@@ -28,7 +28,7 @@ void Score::printScore(){
   scoreFile << "\\version \"2.22.1\"" << endl;
   scoreFile << "<<" << endl;
   scoreFile << "  \\new Staff {" << endl;
-  scoreFile << "    \\time 4/4" << endl;
+  scoreFile << "    \\clef \"bass\" \\time 4/4" << endl;
   scoreFile << "      "<< notes << endl;  
   scoreFile << "  }" << endl;
   scoreFile << ">>";
