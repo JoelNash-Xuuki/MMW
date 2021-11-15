@@ -19,12 +19,14 @@ using namespace std;
 
 class Media{
   private: 
-  const char *filename;
   AVFormatContext *container= NULL;
-  AVCodecParameters *pCodecParameters =  NULL;
+
   AVCodec *pCodec = NULL;
+  AVCodecParameters *codecParameters =  NULL;
+  AVCodec *localCodec = NULL;
 
   int video_stream_index = -1;
+  const char *filename;
 
   public:
   Media(int argc, const char *argv[]){
@@ -36,9 +38,28 @@ class Media{
 
     this->containerFormatData();
     avformat_find_stream_info(container,  NULL); 
-    for (int i= 0; i < container->nb_streams; i++){
 
-	}
+    	
+    for (int i = 0; i < container->nb_streams; i++){
+
+      codecParameters = container->streams[i]->codecpar;
+      localCodec= avcodec_find_decoder(codecParameters->codec_id);
+
+      if(codecParameters->codec_type == AVMEDIA_TYPE_VIDEO){
+        printf("Video Codec: resolution %d x %d", 
+        codecParameters->width, 
+	    codecParameters->height);
+	  } else if (codecParameters->codec_type== 
+        AVMEDIA_TYPE_AUDIO){
+	    printf("Audio Codec: %d channels, sample rate %d", 
+	 	  codecParameters->channels, 
+		  codecParameters->sample_rate);
+	  }
+    }
+
+
+    
+ 
 
   }
 
@@ -54,25 +75,6 @@ class Media{
 /*
 
     for (int i = 0; i < formatContext->nb_streams; i++){
-	  AVCodecParameters *pLocalCodecParameters =  NULL;
-      pLocalCodecParameters = formatContext->streams[i]->codecpar;
-
-      printf("AVStream->time_base before open coded %d/%d \n", 
-        formatContext->streams[i]->time_base.num, 
-	    formatContext->streams[i]->time_base.den);
-
-      printf("AVStream->r_frame_rate before open coded %d/%d\n", 	
-	    formatContext->streams[i]->r_frame_rate.num, 
-		formatContext->streams[i]->r_frame_rate.den);
-
-	  printf("AVStream->start_time %d\n", 
-	    formatContext->streams[i]->start_time);
-      printf("AVStream->duration %d\n", 
-        formatContext->streams[i]->duration);
-
-	  AVCodec *pLocalCodec = NULL;
-      pLocalCodec = avcodec_find_decoder(
-	    pLocalCodecParameters->codec_id);
 
 	  if (pLocalCodec==NULL) {
         printf("ERROR unsupported codec!");
