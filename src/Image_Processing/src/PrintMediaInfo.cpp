@@ -19,10 +19,11 @@ using namespace std;
 
 class Media{
   private: 
-  AVFormatContext *formatContext= NULL;
-
-  AVCodec *pCodec = NULL;
+  const char *filename;
+  AVFormatContext *container= NULL;
   AVCodecParameters *pCodecParameters =  NULL;
+  AVCodec *pCodec = NULL;
+
   int video_stream_index = -1;
 
   public:
@@ -30,27 +31,32 @@ class Media{
     if (argc < 2) {
       cout << "usage: " << argv[0] << " input_file" << endl;
     }
+	else
+	  filename= argv[1];
 
-    formatContext= avformat_alloc_context();
-    if (!formatContext)
-      cout << "formatContext ERROR" << endl;
+    this->containerFormatData();
+    avformat_find_stream_info(container,  NULL); 
+    for (int i= 0; i < container->nb_streams; i++){
 
-    if (avformat_open_input(&formatContext, 
-							argv[1], NULL, NULL) != 0)
-	  cout << "Can't open file" << endl;
+	}
 
+  }
+
+  void containerFormatData(){
+    container= avformat_alloc_context();
+	avformat_open_input(&container, filename, NULL, NULL);
     printf("format: %s,\n duration: %lld us,\n bit_rate %lld\n", 
-			formatContext->iformat->name, 
-			formatContext->duration, 
-			formatContext->bit_rate);
+			container->iformat->name, 
+			container->duration, 
+			container->bit_rate);
+  }
 
-    if (avformat_find_stream_info(formatContext,  NULL) < 0) {
-      cout << "ERROR could not get the stream info" << endl;
-    }
+/*
 
     for (int i = 0; i < formatContext->nb_streams; i++){
 	  AVCodecParameters *pLocalCodecParameters =  NULL;
       pLocalCodecParameters = formatContext->streams[i]->codecpar;
+
       printf("AVStream->time_base before open coded %d/%d \n", 
         formatContext->streams[i]->time_base.num, 
 	    formatContext->streams[i]->time_base.den);
@@ -59,11 +65,14 @@ class Media{
 	    formatContext->streams[i]->r_frame_rate.num, 
 		formatContext->streams[i]->r_frame_rate.den);
 
-	  printf("AVStream->start_time %d\n", formatContext->streams[i]->start_time);
-      printf("AVStream->duration %d\n", formatContext->streams[i]->duration);
+	  printf("AVStream->start_time %d\n", 
+	    formatContext->streams[i]->start_time);
+      printf("AVStream->duration %d\n", 
+        formatContext->streams[i]->duration);
 
 	  AVCodec *pLocalCodec = NULL;
-      pLocalCodec = avcodec_find_decoder(pLocalCodecParameters->codec_id);
+      pLocalCodec = avcodec_find_decoder(
+	    pLocalCodecParameters->codec_id);
 
 	  if (pLocalCodec==NULL) {
         printf("ERROR unsupported codec!");
@@ -76,12 +85,21 @@ class Media{
           pCodec = pLocalCodec;
           pCodecParameters = pLocalCodecParameters;
         }
+
 		printf("Video Codec: resolution %d x %d", 
           pLocalCodecParameters->width, 
 	      pLocalCodecParameters->height);
-  	  }
+      } else if (pLocalCodecParameters->codec_type == 
+	    AVMEDIA_TYPE_AUDIO) {
+
+        printf("Audio Codec: %d channels, sample rate %d", 
+	 	  pLocalCodecParameters->channels, 
+		  pLocalCodecParameters->sample_rate);
+      }
 	}  
   }
+
+*/
 };
 
 int main(int argc, const char *argv[]){
@@ -90,9 +108,7 @@ int main(int argc, const char *argv[]){
 }
 
 
-  //  } else if (pLocalCodecParameters->codec_type == AVMEDIA_TYPE_AUDIO) {
-  //    logging("Audio Codec: %d channels, sample rate %d", pLocalCodecParameters->channels, pLocalCodecParameters->sample_rate);
-  //  }
+    
 
   //  logging("\tCodec %s ID %d bit_rate %lld", pLocalCodec->name, pLocalCodec->id, pLocalCodecParameters->bit_rate);
   //}
