@@ -1,0 +1,4 @@
+- start jack
+
+- run the command:
+csound -odac -adc0 -B512 -b128 -+rtaudio=jack mictest.csd
