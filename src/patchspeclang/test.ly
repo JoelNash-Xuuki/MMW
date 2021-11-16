@@ -2,7 +2,7 @@
 <<
   \new Staff {
     \clef "bass" \time 4/4
-      c g g e 
+      c
 
   }
 >>

@@ -175,31 +175,31 @@ void ModularSynth::printScore(string file){
   orcFile << "f4 0 8192 10 1 0 .333 0 .2 0 .142 0 .111;square\n";
   orcFile << "f5 0 8192 10 1 1 1 1 1 1 1 1 1 1 1 1 1;pulse\n";
   orcFile << "t0 76" << endl;
+  
+  regex noteLetter("[a-gr]| [a-gr] ");
+  regex rhythmPat("4");
 
-  for(int i= 0; i < notes.length(); i++){
-    if(notes[i] > 96 && notes[i] < 104 ){
-      freq= calculateFreq(asciiToMidi(notes[i]));
-      if(notes[i+1] == ',' && notes[i+2] == ' '){
-	    octDownOne= true;
-        octDownTwo= false;
-	  }
-      else if(notes[i+1] == ',' && notes[i+2] == ','){
-		octDownOne= false;
-        octDownTwo= true;
-	  }
-
-      if(octDownOne && !octDownTwo)
-	   freq /= 2.;
-	  else if(!octDownOne && octDownTwo)
-        freq /= 4.;
-
-	  orcFile << "i1 "<< startTime << " " <<  duration << " " << freq << endl;
-      startTime += 4;
+  freq /= 2;
+  
+  smatch noteLetterMatches;
+  smatch rhythmMatches;
+  
+  if(regex_search(notes, noteLetterMatches, noteLetter)){
+    if(notes[0] > 96 && notes[0] < 104 ){
+      freq= calculateFreq(asciiToMidi(notes[0]));
 	}
-    
+    cout << "Test Letter: " << noteLetterMatches[0];
   }
-  orcFile << "e";
-}
+  
+  if(regex_search(notes, rhythmMatches, rhythmPat)){
+    cout << "Test rhythme: " << rhythmMatches[0];
+  }
+  
+  orcFile << "i1 "<< startTime << " " <<  duration 
+    << " " << freq << endl;
+  startTime += 4;
+    orcFile << "e";
+  }
 
 void ModularSynth::initialiseGlobals(OscMod *oscs, 
 									 int oscCount, 
