@@ -1,13 +1,3 @@
-/*Main components
- *
- * Format (Container) - a wrapper, providing sync, metadata and muxing for the streams.
- * Stream - a continuous stream (audio or video) of data over time.
- * Codec - defines how data are enCOded (from Frame to Packet)
- *        and DECoded (from Packet to Frame).
- * Packet - are the data (kind of slices of the stream data) to be decoded as raw frames.
- * Frame - a decoded raw frame (to be encoded or filtered).
- */
-
 extern "C"{
   #include <libavformat/avformat.h>
   //#include <libavcodec/avcodec.h>
@@ -38,14 +28,12 @@ class Media{
     }
 	else
 	  filename= argv[1];
-
     this->containerFormatData();
 	this->accessStreamCodec();
 	this->frames();
-//    codecContext= avcodec_alloc_context3(codec);
-//	avcodec_parameters_to_context(codecContext, codecParameters);
-//	avcodec_open2(codecContext, codec, NULL);
-
+    codecContext= avcodec_alloc_context3(codec);
+	avcodec_parameters_to_context(codecContext, codecParameters);
+	avcodec_open2(codecContext, codec, NULL);
   }
 
   void containerFormatData(){
@@ -57,12 +45,14 @@ class Media{
     avformat_find_stream_info(container,  NULL);
     for (int i = 0; i < container->nb_streams; i++){
       AVCodecParameters *localCodecParameters =  NULL;
-      localCodecParameters = container->streams[i]->codecpar;
+      localCodecParameters = container->streams[i]->
+	    codecpar;
 
 	  AVCodec *localCodec = NULL;
       localCodec= avcodec_find_decoder(localCodecParameters->codec_id);
 
-      if(localCodecParameters->codec_type == AVMEDIA_TYPE_VIDEO){
+      if(localCodecParameters->codec_type == 
+	    AVMEDIA_TYPE_VIDEO){
         if(video_stream_index == -1){
 		  video_stream_index= i;
 		  codec= localCodec;
@@ -83,7 +73,22 @@ class Media{
 	avcodec_open2(codecContext, codec, NULL);
   }
 
-  int decodePacketToFrames(){
+  int decodePacketToFrames(AVPacket *packet, 
+						   AVCodecContext *codecContext,
+						   AVFrame *frame){
+    int response= avcodec_send_packet(codecContext,
+	 							      packet);
+	while(response >=0){
+	cout << response << endl;
+    printf("Frame: %d\n", 
+		    codecContext->frame_number);
+	  char frame_filename[1024];
+      save_gray_frame(frame->data[0], 
+					  frame->linesize[0],
+					  frame->width,
+					  frame->height,
+					  frame_filename);
+	}
     return 1;
   }
 
@@ -94,12 +99,32 @@ class Media{
 	int how_many_packets_to_process= 0;
     while(av_read_frame(container, packet) >= 0){
 	  if(packet->stream_index== video_stream_index){
-        response= decodePacketToFrames();
+        response= decodePacketToFrames(packet, codecContext, frame);
+		if(response < 0) break;
+		if (--how_many_packets_to_process <= 0) break;
 	  }
+	  av_packet_unref(packet);
+	}
+	avformat_close_input(&container);
+    av_packet_free(&packet);
+	av_frame_free(&frame);
+	avcodec_free_context(&codecContext);
+  }
 
-    }
+  void save_gray_frame(unsigned char *buf, 
+								 int wrap,
+								int xsize,
+						        int ysize,
+						   char *filename){
 
+    FILE *f;
+	int i;
+//    f= fopen(filename, "w");
+ //   fprintf(f, "P5\n%d %d \n %d \n", xsize, ysize, 255);
+//    for(i= 0; i< ysize; i++){
+//	  fwrite(buf + i * wrap, 1, xsize, f);
 
+   // fclose(f);
   }
 };
 
@@ -107,97 +132,3 @@ int main(int argc, const char *argv[]){
   Media m = Media(argc, argv);
   return 0;
 }
-
-
- 
-  //if (avcodec_open2(pCodecContext, pCodec, NULL) < 0){
-  //  logging("failed to open codec through avcodec_open2");
-  //  return -1;
-  //}
-
-  //AVFrame *pFrame = av_frame_alloc();
-  //if (!pFrame){
-  //  logging("failed to allocated memory for AVFrame");
-  //  return -1;
-  //}
-
-  //AVPacket *pPacket = av_packet_alloc();
-  //if (!pPacket){
-  //  logging("failed to allocated memory for AVPacket");
-  //  return -1;
-  //}
-
-  //int response = 0;
-  //int how_many_packets_to_process = 8;
-
-  //while (av_read_frame(pFormatContext, pPacket) >= 0){
-  //  if (pPacket->stream_index == video_stream_index) {
-  //  logging("AVPacket->pts %" PRId64, pPacket->pts);
-  //    response = decode_packet(pPacket, pCodecContext, pFrame);
-  //    if (response < 0)
-  //      break;
-  //    if (--how_many_packets_to_process <= 0) break;
-  //  }
-  //  av_packet_unref(pPacket);
-  //}
-
-  //logging("releasing all the resources");
-
-  //avformat_close_input(&pFormatContext);
-  //av_packet_free(&pPacket);
-  //av_frame_free(&pFrame);
-  //avcodec_free_context(&pCodecContext);
-
-
-
-//
-//static int decode_packet(AVPacket *pPacket, AVCodecContext *pCodecContext, AVFrame *pFrame){
-//  int response = avcodec_send_packet(pCodecContext, pPacket);
-//
-//  if (response < 0) {
-//    logging("Error while sending a packet to the decoder: %s", av_err2str(response));
-//    return response;
-//  }
-//
-//  while (response >= 0){
-//    response = avcodec_receive_frame(pCodecContext, pFrame);
-//    if (response == AVERROR(EAGAIN) || response == AVERROR_EOF) {
-//      break;
-//    } else if (response < 0) {
-//      logging("Error while receiving a frame from the decoder: %s", av_err2str(response));
-//      return response;
-//    }
-//
-//    if (response >= 0) {
-//      logging(
-//          "Frame %d (type=%c, size=%d bytes, format=%d) pts %d key_frame %d [DTS %d]",
-//          pCodecContext->frame_number,
-//          av_get_picture_type_char(pFrame->pict_type),
-//          pFrame->pkt_size,
-//          pFrame->format,
-//          pFrame->pts,
-//          pFrame->key_frame,
-//          pFrame->coded_picture_number
-//      );
-//
-//      char frame_filename[1024];
-//      snprintf(frame_filename, sizeof(frame_filename), "%s-%d.pgm", "frame", pCodecContext->frame_number);
-//      if (pFrame->format != AV_PIX_FMT_YUV420P){
-//        logging("Warning: the generated file may not be a grayscale image, but could e.g. be just the R component if the video format is RGB");
-//      }
-//      save_gray_frame(pFrame->data[0], pFrame->linesize[0], pFrame->width, pFrame->height, frame_filename);
-//    }
-//  }
-//  return 0;
-//}
-//
-//static void save_gray_frame(unsigned char *buf, int wrap, int xsize, int ysize, char *filename){
-//    FILE *f;
-//    int i;
-//    f = fopen(filename,"w");
-//    fprintf(f, "P5\n%d %d\n%d\n", xsize, ysize, 255);
-//
-//    for (i = 0; i < ysize; i++)
-//        fwrite(buf + i * wrap, 1, xsize, f);
-//    fclose(f);
-//}

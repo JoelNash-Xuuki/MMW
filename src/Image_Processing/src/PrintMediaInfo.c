@@ -219,7 +219,7 @@ static int decode_packet(AVPacket *pPacket, AVCodecContext *pCodecContext, AVFra
   if (response < 0) {
     logging("Error while sending a packet to the decoder: %s", av_err2str(response));
     return response;
-  }
+  
 
   while (response >= 0)
   {
