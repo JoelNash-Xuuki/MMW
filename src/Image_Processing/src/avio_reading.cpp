@@ -32,34 +32,36 @@ static int read_packet(void *opaque, uint8_t *buf, int buf_size)
  
 int main(int argc, char *argv[])
 {
-    AVFormatContext *fmt_ctx = NULL;
-    AVIOContext *avio_ctx = NULL;
-    uint8_t *buffer = NULL, *avio_ctx_buffer = NULL;
-    size_t buffer_size, avio_ctx_buffer_size = 4096;
-    char *input_filename = NULL;
-    int ret = 0;
-    struct buffer_data bd = { 0 };
+  AVFormatContext *fmt_ctx = NULL;
+  AVIOContext *avio_ctx = NULL;
+  uint8_t *buffer = NULL, *avio_ctx_buffer = NULL;
+  size_t buffer_size, avio_ctx_buffer_size = 4096;
+  char *input_filename = NULL;
+  int ret = 0;
+  struct buffer_data bd = { 0 };
  
-    if (argc != 2) {
-     cout << "usage: "<< argv[0] <<  " input_file\n" << endl;
+  if (argc != 2) {
+   cout << "usage: "<< argv[0] <<  " input_file\n" << endl;
       return 1;
   }
+
   input_filename = argv[1];
- 
-  ret = av_file_map(input_filename, &buffer, &buffer_size, 0, NULL);
+  ret = av_file_map(input_filename, 
+						  &buffer, 
+						  &buffer_size, 0, NULL);
     
   bd.ptr  = buffer;
   bd.size = buffer_size;
+
+  fmt_ctx = avformat_alloc_context();
+  avio_ctx_buffer= av_malloc(avio_ctx_buffer_size);
+   
  
   return 0;
 }
 
 
  
-    //if (!(fmt_ctx = avformat_alloc_context())) {
-    //    ret = AVERROR(ENOMEM);
-    //    goto end;
-    //}
  
     //avio_ctx_buffer = av_malloc(avio_ctx_buffer_size);
     //if (!avio_ctx_buffer) {

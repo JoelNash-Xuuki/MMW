@@ -8,9 +8,9 @@
  * Frame - a decoded raw frame (to be encoded or filtered).
  */
 
-//#include <libavcodec/avcodec.h>
 extern "C"{
   #include <libavformat/avformat.h>
+  //#include <libavcodec/avcodec.h>
   #include <stdio.h>
 }
 
@@ -23,12 +23,13 @@ class Media{
 
   AVCodec *codec = NULL;
   AVCodecParameters *codecParameters =  NULL;
-  AVCodec *localCodec = NULL;
-
   AVCodecContext *codecContext; 
 
   int video_stream_index = -1;
   const char *filename;
+
+  AVFrame *frame;
+  AVPacket *packet;
 
   public:
   Media(int argc, const char *argv[]){
@@ -40,42 +41,65 @@ class Media{
 
     this->containerFormatData();
 	this->accessStreamCodec();
-
-    codecContext= avcodec_alloc_context3(codec);
-	avcodec_parameters_to_context(codecContext, codecParameters);
-	avcodec_open2(codecContext, codec, NULL);
+	this->frames();
+//    codecContext= avcodec_alloc_context3(codec);
+//	avcodec_parameters_to_context(codecContext, codecParameters);
+//	avcodec_open2(codecContext, codec, NULL);
 
   }
 
   void containerFormatData(){
     container= avformat_alloc_context();
-	avformat_open_input(&container, filename, NULL, NULL);
-    printf("format: %s,\n duration: %lld us,\n bit_rate %lld\n", 
-			container->iformat->name, 
-			container->duration, 
-			container->bit_rate);
+    avformat_open_input(&container, filename, NULL, NULL);
   }
 
   void accessStreamCodec(){
     avformat_find_stream_info(container,  NULL);
     for (int i = 0; i < container->nb_streams; i++){
+      AVCodecParameters *localCodecParameters =  NULL;
+      localCodecParameters = container->streams[i]->codecpar;
 
-      codecParameters = container->streams[i]->codecpar;
-      localCodec= avcodec_find_decoder(codecParameters->codec_id);
+	  AVCodec *localCodec = NULL;
+      localCodec= avcodec_find_decoder(localCodecParameters->codec_id);
 
-      if(codecParameters->codec_type == AVMEDIA_TYPE_VIDEO){
-        printf("Video Codec: resolution %d x %d\n", 
-        codecParameters->width, 
-	    codecParameters->height);
-		int video_stream_index= i;
-        codec= localCodec;
-	  } else if (codecParameters->codec_type== 
+      if(localCodecParameters->codec_type == AVMEDIA_TYPE_VIDEO){
+        if(video_stream_index == -1){
+		  video_stream_index= i;
+		  codec= localCodec;
+		  codecParameters= localCodecParameters;
+		}
+		printf("Video Codec: resolution %d x %d\n", 
+          localCodecParameters->width, 
+          localCodecParameters->height);
+      } else if (localCodecParameters->codec_type== 
         AVMEDIA_TYPE_AUDIO){
-	    printf("Audio Codec: %d channels, sample rate %d\n", 
-	 	  codecParameters->channels, 
-		  codecParameters->sample_rate);
-	  }
+        printf("Audio Codec: %d channels, sample rate %d\n", 
+     	  localCodecParameters->channels, 
+    	  localCodecParameters->sample_rate);
+      }
     }
+	codecContext= avcodec_alloc_context3(codec);    
+    avcodec_parameters_to_context(codecContext, codecParameters);
+	avcodec_open2(codecContext, codec, NULL);
+  }
+
+  int decodePacketToFrames(){
+    return 1;
+  }
+
+  void frames(){
+    frame= av_frame_alloc();
+	packet= av_packet_alloc();
+	int response= 0;
+	int how_many_packets_to_process= 0;
+    while(av_read_frame(container, packet) >= 0){
+	  if(packet->stream_index== video_stream_index){
+        response= decodePacketToFrames();
+	  }
+
+    }
+
+
   }
 };
 
