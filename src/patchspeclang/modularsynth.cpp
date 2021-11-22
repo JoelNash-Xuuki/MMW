@@ -8,17 +8,24 @@
 
 using namespace std;
 
+Rack::Rack(){
+  oscCount= 0;
+}
+
 ModularSynth::ModularSynth(string name){
 	this->wasRun = false;
 	createRackWithModules();
 }
+
 void ModularSynth::testMethod(){
   this->wasRun = true;
 }
+
 void ModularSynth::runPatch(){
   printOrc("patch.orc");
   printScore("patch.sco"); 
 }
+
 void ModularSynth::readOsc(OscMod *oscs, int count){
   scanf("%s %s %s %s %s %s %s",
 	  oscs[count].sigOut, 
@@ -35,6 +42,7 @@ void ModularSynth::readOsc(OscMod *oscs, int count){
     exit(1);
   }
 }
+
 void ModularSynth::readNoise(NoiseMod *unit, int count){
   scanf("%s %s %s %s %s", unit[count].sigOut,
 						  unit[count].speed,
@@ -60,7 +68,7 @@ void ModularSynth::createRackWithModules(){
 
 void ModularSynth::printOrc(string fileName){
   
-  NoiseMod *noises, *sahs;
+  NoiseMod *sahs;
   VcfMod *vcfs;
   MixOut *mixes;
 
@@ -95,7 +103,7 @@ void ModularSynth::printOrc(string fileName){
 
   while(scanf("%s", moduleName) != EOF){
     if(! strcmp(moduleName, "OSC")){
-	  readOsc(rack.oscs, oscCount++); 
+	  readOsc(rack.oscs, rack.oscCount++); 
     } else if(! strcmp(moduleName, "MIXOUT")){ 
 	  readMix(mixes, mixCount++);
 	} else if(! strcmp(moduleName, "NOISE")) {
@@ -112,7 +120,7 @@ void ModularSynth::printOrc(string fileName){
 	}
   }
 
-  initialiseGlobals(oscCount, 
+  initialiseGlobals(rack.oscCount, 
 					rack.noises, 
 					noiseCount,
 					sahs, 
@@ -121,7 +129,7 @@ void ModularSynth::printOrc(string fileName){
 					vcfCount,
 					orcFile);
   
-  for(i=0; i< oscCount; i++)
+  for(i=0; i< rack.oscCount; i++)
     printOsc(rack.oscs[i], orcFile);
 
   for(i=0; i< noiseCount; i++)

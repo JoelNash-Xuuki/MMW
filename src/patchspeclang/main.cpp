@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "modularsynth.hpp"
-#include "score.hpp"
+#include "Score.hpp"
 
 int main(int argc, char **argv){
   ModularSynth ms= ModularSynth("synth");

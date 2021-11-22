@@ -1,5 +1,5 @@
 #include <string>
-#include "score.hpp"
+#include "Score.hpp"
 #include <iostream>
 
 using namespace std;

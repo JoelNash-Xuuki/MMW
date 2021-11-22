@@ -38,7 +38,9 @@ typedef struct {
 
 class Rack{
   public:
+	Rack();
     OscMod *oscs;
+    int oscCount;
 	NoiseMod *noises;
 };
 
