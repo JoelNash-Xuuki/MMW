@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include "modularsynth.hpp"
+#include "Modularsynth.hpp"
 #include "Score.hpp"
 
 int main(int argc, char **argv){

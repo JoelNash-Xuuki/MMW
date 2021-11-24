@@ -1,6 +1,6 @@
 #include <string>
 #include <math.h>
-#include "modularsynth.hpp"
+#include "Modularsynth.hpp"
 #include <cstring>
 #include <iostream>
 #include <fstream>
@@ -177,7 +177,7 @@ void ModularSynth::printScore(string file){
   bool octDownOne, octDownTwo;
   double startTime= 0;
   orcFile.open(file);
-  string notes= readFileIntoString("test.note");
+  string notes= readFileIntoString("doc/test.note");
   double duration= 0.25;
 
   orcFile << "f1 0 8192 10 1;sine \n";
