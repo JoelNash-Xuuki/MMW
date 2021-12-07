@@ -1,12 +1,12 @@
 #include <string>
-#include "score.hpp"
+#include "Score.hpp"
 #include <iostream>
 
 using namespace std;
 
-Score::Score(string fileName){
+Score::Score(string scoreFileName){
   this->wasRun= false;
-  this->fileName= fileName;
+  this->scoreFileName= scoreFileName;
   this->printScore();
 }
 
@@ -23,12 +23,13 @@ string Score::readFileIntoString(const string& path) {
 
 void Score::printScore(){
 
-  string notes= readFileIntoString("test.note");
-  scoreFile.open(fileName);
+  string notes= readFileIntoString("doc/test.note");
+
+  scoreFile.open(scoreFileName);
   scoreFile << "\\version \"2.22.1\"" << endl;
   scoreFile << "<<" << endl;
   scoreFile << "  \\new Staff {" << endl;
-  scoreFile << "    \\time 4/4" << endl;
+  scoreFile << "    \\clef \"bass\" \\time 4/4" << endl;
   scoreFile << "      "<< notes << endl;  
   scoreFile << "  }" << endl;
   scoreFile << ">>";
