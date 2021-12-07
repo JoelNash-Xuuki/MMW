@@ -55,7 +55,7 @@ int main(int argc, const char *argv[])
   // (of size equals to pFormatContext->nb_streams)
   // the arguments are:
   // the AVFormatContext
-  // and options contains options for codec corresponding to i-th stream.
+  // and optios contains options for codec corresponding to i-th stream.
   // On return each dictionary will be filled with options that were not found.
   // https://ffmpeg.org/doxygen/trunk/group__lavf__decoding.html#gad42172e27cddafb81096939783b157bb
   if (avformat_find_stream_info(pFormatContext,  NULL) < 0) {
@@ -77,17 +77,25 @@ int main(int argc, const char *argv[])
   {
     AVCodecParameters *pLocalCodecParameters =  NULL;
     pLocalCodecParameters = pFormatContext->streams[i]->codecpar;
-    logging("AVStream->time_base before open coded %d/%d", pFormatContext->streams[i]->time_base.num, pFormatContext->streams[i]->time_base.den);
-    logging("AVStream->r_frame_rate before open coded %d/%d", pFormatContext->streams[i]->r_frame_rate.num, pFormatContext->streams[i]->r_frame_rate.den);
-    logging("AVStream->start_time %" PRId64, pFormatContext->streams[i]->start_time);
-    logging("AVStream->duration %" PRId64, pFormatContext->streams[i]->duration);
+    logging("AVStream->time_base before open coded %d/%d", 
+	  pFormatContext->streams[i]->time_base.num, 
+	  pFormatContext->streams[i]->time_base.den);
+
+    logging("AVStream->r_frame_rate before open coded %d/%d", 
+			pFormatContext->streams[i]->r_frame_rate.num, 
+			pFormatContext->streams[i]->r_frame_rate.den);
+
+    logging("AVStream->start_time %" PRId64, 
+		pFormatContext->streams[i]->start_time);
+
+    logging("AVStream->duration %" PRId64, 
+		pFormatContext->streams[i]->duration);
 
     logging("finding the proper decoder (CODEC)");
 
     AVCodec *pLocalCodec = NULL;
 
     // finds the registered decoder for a codec ID
-    // https://ffmpeg.org/doxygen/trunk/group__lavc__decoding.html#ga19a0ca553277f019dd5b0fec6e1f9dca
     pLocalCodec = avcodec_find_decoder(pLocalCodecParameters->codec_id);
 
     if (pLocalCodec==NULL) {
@@ -104,14 +112,20 @@ int main(int argc, const char *argv[])
         pCodecParameters = pLocalCodecParameters;
       }
 
-      logging("Video Codec: resolution %d x %d", pLocalCodecParameters->width, pLocalCodecParameters->height);
+      logging("Video Codec: resolution %d x %d", 
+	    pLocalCodecParameters->width, 
+	    pLocalCodecParameters->height);
     } else if (pLocalCodecParameters->codec_type == AVMEDIA_TYPE_AUDIO) {
-      logging("Audio Codec: %d channels, sample rate %d", pLocalCodecParameters->channels, pLocalCodecParameters->sample_rate);
+      logging("Audio Codec: %d channels, sample rate %d", 
+	    pLocalCodecParameters->channels, 
+ 		pLocalCodecParameters->sample_rate);
     }
 
     // print its name, id and bitrate
-    logging("\tCodec %s ID %d bit_rate %lld", pLocalCodec->name, pLocalCodec->id, pLocalCodecParameters->bit_rate);
-  }
+    logging("\tCodec %s ID %d bit_rate %lld", 
+		pLocalCodec->name, pLocalCodec->id, 
+		pLocalCodecParameters->bit_rate);
+  } // *************************************  END OF THE FOR LOOP 
 
   if (video_stream_index == -1) {
     logging("File %s does not contain a video stream!", argv[1]);
@@ -205,7 +219,7 @@ static int decode_packet(AVPacket *pPacket, AVCodecContext *pCodecContext, AVFra
   if (response < 0) {
     logging("Error while sending a packet to the decoder: %s", av_err2str(response));
     return response;
-  }
+  
 
   while (response >= 0)
   {
