@@ -1,0 +1,90 @@
+g++  main.cpp modularsynth.cpp score.cpp -o modularsynth
+modularsynth.cpp: Dans la fonction membre « void ModularSynth::readOsc(OscMod*, int) »:
+modularsynth.cpp:26:15: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+   26 |           mod.oscs[count].sigOut,
+      |               ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp:27:15: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+   27 |           mod.oscs[count].frequency,
+      |               ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp:28:15: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+   28 |           mod.oscs[count].waveForm,
+      |               ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp:29:15: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+   29 |           mod.oscs[count].sigAm,
+      |               ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp:30:15: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+   30 |           mod.oscs[count].sigFm,
+      |               ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp:31:15: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+   31 |           mod.oscs[count].oMin,
+      |               ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp:32:15: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+   32 |           mod.oscs[count].oMax);
+      |               ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp: Dans la fonction membre « void ModularSynth::oscModuleCollecter() »:
+modularsynth.cpp:61:7: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+   61 |   mod.oscs= (OscMod *) malloc(MAXMODS * sizeof(OscMod));
+      |       ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp: Dans la fonction membre « void ModularSynth::printOrc(std::string) »:
+modularsynth.cpp:100:23: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+  100 |           readOsc(mod.oscs, oscCount++);
+      |                       ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp:117:25: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+  117 |   initialiseGlobals(mod.oscs,
+      |                         ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp:128:18: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+  128 |     printOsc(mod.oscs[i], orcFile);
+      |                  ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+modularsynth.cpp: Dans la fonction membre « void ModularSynth::initialiseGlobals(OscMod*, int, NoiseMod*, int, NoiseMod*, int, VcfMod*, int, std::ofstream&) »:
+modularsynth.cpp:221:20: erreur: « OscMod* Module::oscs » est privé dans ce contexte
+  221 |     orcFile << mod.oscs[i].sigOut << " init 0.0\n";
+      |                    ^~~~
+Dans le fichier inclus depuis modularsynth.cpp:3:
+modularsynth.hpp:40:11: note: déclaré privé ici
+   40 |   OscMod *oscs;
+      |           ^~~~
+make: *** [makefile:5 : modularsynth] Erreur 1

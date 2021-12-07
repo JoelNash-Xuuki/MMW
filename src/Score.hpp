@@ -1,6 +1,13 @@
 #include <string>
 #include <fstream>
 
+/*
+
+- read notes in.
+- write score file
+
+*/
+
 using namespace std;
 
 #ifndef Score_H
@@ -8,13 +15,14 @@ using namespace std;
 class Score{
   public:
 	bool wasRun; 
-    string fileName;	
+    string scoreFileName;	
   public:
 	Score(string name);
 	ofstream scoreFile;
     string readFileIntoString(const string& path);
     void printScore();
 	void testMethod();
+	void storeFileAsString();
 };
 # endif
 

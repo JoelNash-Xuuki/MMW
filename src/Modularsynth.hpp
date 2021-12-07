@@ -15,12 +15,14 @@ typedef struct {
   char oMin[MODSYN_CHARS];
   char oMax[MODSYN_CHARS];
 } OscMod;
+
 typedef struct {
   char sigOut[MODSYN_CHARS];
   char input[MODSYN_CHARS];
   char cutoff[MODSYN_CHARS];
   char resonance[MODSYN_CHARS];
 } VcfMod;
+
 typedef struct {
   char sigOut[MODSYN_CHARS];
   char speed[MODSYN_CHARS];
@@ -28,20 +30,30 @@ typedef struct {
   char oMin[MODSYN_CHARS];
   char oMax[MODSYN_CHARS];
 } NoiseMod;
+
 typedef struct {
   char outVar[MODSYN_CHARS];
   char amplitude[MODSYN_CHARS];
 } MixOut;
+
+class Rack{
+  public:
+	Rack();
+    OscMod *oscs;
+    int oscCount;
+	NoiseMod *noises;
+};
+
 class ModularSynth{
   private:
 	ofstream orcFile;
+	Rack rack;
 	bool wasRun; 
     void readOsc(OscMod *oscs, int count);
     void readNoise(NoiseMod *unit, int count);
     void readVcf(VcfMod *vcf, int count);
 	void readMix(MixOut *mix, int count);
-	void initialiseGlobals(OscMod *oscs, 
-						   int oscCount, 
+	void initialiseGlobals(int oscCount, 
 					       NoiseMod *noises, 
 						   int noiseCount, 
 						   NoiseMod *sahs, 
@@ -55,6 +67,7 @@ class ModularSynth{
     void printSah(NoiseMod noise, ofstream& orcFile);
     void printVcf(VcfMod vcf, ofstream& orcFile);
 	void printMix(MixOut mix, ofstream& orcFile);
+	void createRackWithModules();
 
     string readFileIntoString(const string& path);
     int asciiToMidi(char note);
