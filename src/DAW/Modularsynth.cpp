@@ -22,8 +22,8 @@ void ModularSynth::testMethod(){
 }
 
 void ModularSynth::runPatch(){
-  printOrc("patch.orc");
-  printScore("patch.sco"); 
+  printOrc("~/MMW/src/Orc/patch.orc");
+  printScore("~/MMW/src/Sco/patch.sco"); 
 }
 
 void ModularSynth::readOsc(OscMod *oscs, int count){
@@ -177,7 +177,7 @@ void ModularSynth::printScore(string file){
   bool octDownOne, octDownTwo;
   double startTime= 0;
   orcFile.open(file);
-  string notes= readFileIntoString("doc/test.note");
+  string notes= readFileIntoString("doc/Notes/test.note");
   double duration= 0.25;
 
   orcFile << "f1 0 8192 10 1;sine \n";

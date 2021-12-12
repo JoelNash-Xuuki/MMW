@@ -23,7 +23,7 @@ string Score::readFileIntoString(const string& path) {
 
 void Score::printScore(){
 
-  string notes= readFileIntoString("doc/test.note");
+  string notes= readFileIntoString("~/MMW/doc/Notes/test.note");
 
   scoreFile.open(scoreFileName);
   scoreFile << "\\version \"2.22.1\"" << endl;
