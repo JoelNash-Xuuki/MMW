@@ -63,6 +63,5 @@ int main(){
   string file("test.note");
   string note = readFileIntoString(file);
   cout << notesToFreq(note);
-  
   return 0;
 } 

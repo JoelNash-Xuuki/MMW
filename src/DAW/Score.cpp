@@ -5,9 +5,8 @@
 using namespace std;
 
 Score::Score(string scoreFileName){
-  this->wasRun= false;
-  this->scoreFileName= scoreFileName;
-  this->printScore();
+  //this->scoreFileName= scoreFileName;
+  //this->printScore();
 }
 
 string Score::readFileIntoString(const string& path) {
@@ -23,7 +22,7 @@ string Score::readFileIntoString(const string& path) {
 
 void Score::printScore(){
 
-  string notes= readFileIntoString("~/MMW/doc/Notes/test.note");
+  string notes= readFileIntoString("doc/Notes/test.note");
 
   scoreFile.open(scoreFileName);
   scoreFile << "\\version \"2.22.1\"" << endl;
@@ -35,8 +34,3 @@ void Score::printScore(){
   scoreFile << ">>";
   scoreFile.close();
 }
-
-void Score::testMethod(){
-  this->wasRun = true;
-}
-

@@ -21,7 +21,6 @@ class Score{
 	ofstream scoreFile;
     string readFileIntoString(const string& path);
     void printScore();
-	void testMethod();
 	void storeFileAsString();
 };
 # endif

@@ -1,14 +1,11 @@
 #include "Test.h"
-#include "../src/Score.hpp"
+#include "../src/DAW/Score.hpp"
 
 class ScoreTest : public TestSuite::Test {
-
-  void run(){
-    this->testMethod();
-  }
-
   public:
-    void testMethod();
+    void setUp();
+	void run() override;
+	void testReadFileIntoString();
+	void testPrintScore();
 	void testStoreFileAsString();
-
 };

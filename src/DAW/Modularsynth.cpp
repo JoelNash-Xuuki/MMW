@@ -22,8 +22,8 @@ void ModularSynth::testMethod(){
 }
 
 void ModularSynth::runPatch(){
-  printOrc("~/MMW/src/Orc/patch.orc");
-  printScore("~/MMW/src/Sco/patch.sco"); 
+  printOrc("patch.orc");
+  printScore("patch.sco"); 
 }
 
 void ModularSynth::readOsc(OscMod *oscs, int count){
@@ -80,8 +80,8 @@ void ModularSynth::printOrc(string fileName){
   float duration = 10.0;
   char moduleName[64];
   int i;
-  const char* filename = "patch";
-  FILE *patchFile = fopen(filename, "r");
+  const char* patch = "~/MMW/doc/patches/FM";
+  FILE *patchFile = fopen(patch, "FM");
 
   rack.oscs= (OscMod *) malloc(MAXMODS * sizeof(OscMod));
   rack.noises= (NoiseMod *) malloc(MAXMODS * sizeof(NoiseMod));
@@ -177,7 +177,7 @@ void ModularSynth::printScore(string file){
   bool octDownOne, octDownTwo;
   double startTime= 0;
   orcFile.open(file);
-  string notes= readFileIntoString("doc/Notes/test.note");
+  string notes= readFileIntoString("doc/Score/test.score");
   double duration= 0.25;
 
   orcFile << "f1 0 8192 10 1;sine \n";
@@ -210,7 +210,7 @@ void ModularSynth::printScore(string file){
     << " " << freq << endl;
   startTime += 4;
     orcFile << "e";
-  }
+}
 
 void ModularSynth::initialiseGlobals(int oscCount, 
 							         NoiseMod *noises, 
@@ -272,6 +272,7 @@ void ModularSynth::printOsc(OscMod osc, ofstream& orcFile){
     		"- using sine instead\n", osc.waveForm);
     orcFile << "isine\n";
   }
+
   sscanf(osc.oMin, "%f", &oMin);
   sscanf(osc.oMax, "%f", &oMax);
   if(oMin != -1.0 || oMax != 1.0){
