@@ -1,6 +1,7 @@
 #include <string>
 #include <math.h>
 #include "Modularsynth.hpp"
+#include "Modules.hpp"
 #include <cstring>
 #include <iostream>
 #include <fstream>
@@ -8,22 +9,17 @@
 
 using namespace std;
 
-Rack::Rack(){
-  oscCount= 0;
-}
-
 ModularSynth::ModularSynth(string name){
-	this->wasRun = false;
-	createRackWithModules();
+  createRackWithModules();
 }
 
-void ModularSynth::testMethod(){
-  this->wasRun = true;
+void ModularSynth::createRackWithModules(){
+  rack= Rack();
 }
 
 void ModularSynth::runPatch(){
-  printOrc("patch.orc");
-  printScore("patch.sco"); 
+  printOrc("doc/patch.orc");
+  printScore("doc/patch.sco"); 
 }
 
 void ModularSynth::readOsc(OscMod *oscs, int count){
@@ -62,21 +58,8 @@ void ModularSynth::readMix(MixOut *mix, int count){
   scanf("%s %s", mix[count].outVar, mix[count].amplitude);
 }
 
-void ModularSynth::createRackWithModules(){
-  rack= Rack();
-}
-
 void ModularSynth::printOrc(string fileName){
-  
-  NoiseMod *sahs;
-  VcfMod *vcfs;
-  MixOut *mixes;
 
-  int oscCount= 0, 
-	  noiseCount= 0, 
-	  sahCount= 0, 
-	  vcfCount= 0,
-	  mixCount= 0;
   float duration = 10.0;
   char moduleName[64];
   int i;
@@ -85,9 +68,9 @@ void ModularSynth::printOrc(string fileName){
 
   rack.oscs= (OscMod *) malloc(MAXMODS * sizeof(OscMod));
   rack.noises= (NoiseMod *) malloc(MAXMODS * sizeof(NoiseMod));
-  sahs= (NoiseMod *) malloc(MAXMODS * sizeof(NoiseMod));
-  vcfs= (VcfMod *) malloc(MAXMODS * sizeof(VcfMod));
-  mixes= (MixOut *) malloc(MAXMODS * sizeof(MixOut));
+  rack.sahs= (NoiseMod *) malloc(MAXMODS * sizeof(NoiseMod));
+  rack.vcfs= (VcfMod *) malloc(MAXMODS * sizeof(VcfMod));
+  rack.mixes= (MixOut *) malloc(MAXMODS * sizeof(MixOut));
 
   orcFile.open(fileName);
   orcFile << "sr= 44100\n";
@@ -105,13 +88,13 @@ void ModularSynth::printOrc(string fileName){
     if(! strcmp(moduleName, "OSC")){
 	  readOsc(rack.oscs, rack.oscCount++); 
     } else if(! strcmp(moduleName, "MIXOUT")){ 
-	  readMix(mixes, mixCount++);
+	  readMix(rack.mixes, rack.mixCount++);
 	} else if(! strcmp(moduleName, "NOISE")) {
-	  readNoise(rack.noises, noiseCount++);
+	  readNoise(rack.noises, rack.noiseCount++);
 	} else if(! strcmp(moduleName, "SAH")){
-	  readNoise(sahs, sahCount++);
+	  readNoise(rack.sahs, rack.sahCount++);
 	} else if(! strcmp(moduleName, "VCF")){
-      readVcf(vcfs, vcfCount++);
+      readVcf(rack.vcfs, rack.vcfCount++);
 	} else if (! strcmp(moduleName, "DURATION")){
 	  scanf("%f", &duration);
 	} else{
@@ -122,27 +105,27 @@ void ModularSynth::printOrc(string fileName){
 
   initialiseGlobals(rack.oscCount, 
 					rack.noises, 
-					noiseCount,
-					sahs, 
-					sahCount,
-				    vcfs, 
-					vcfCount,
+					rack.noiseCount,
+					rack.sahs, 
+					rack.sahCount,
+				    rack.vcfs, 
+					rack.vcfCount,
 					orcFile);
   
   for(i=0; i< rack.oscCount; i++)
     printOsc(rack.oscs[i], orcFile);
 
-  for(i=0; i< noiseCount; i++)
+  for(i=0; i< rack.noiseCount; i++)
     printNoise(rack.noises[i], orcFile);
 
-  for(i=0; i< sahCount; i++)
-    printSah(sahs[i], orcFile);
+  for(i=0; i< rack.sahCount; i++)
+    printSah(rack.sahs[i], orcFile);
 
-  for(i=0; i< vcfCount; i++)
-    printVcf(vcfs[i], orcFile);
+  for(i=0; i< rack.vcfCount; i++)
+    printVcf(rack.vcfs[i], orcFile);
 
-  for(i=0; i< mixCount; i++)
-    printMix(mixes[i], orcFile);
+  for(i=0; i< rack.mixCount; i++)
+    printMix(rack.mixes[i], orcFile);
 
   orcFile << "\tendin\n\n";
 
@@ -320,4 +303,3 @@ void ModularSynth::printMix(MixOut mix, ofstream& orcFile){
   ", p3-0.1," << amp << ", .05,0\n";
   orcFile <<"out (" << mix.outVar << ")*kenv\n";
 }
-

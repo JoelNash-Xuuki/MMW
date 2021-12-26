@@ -1,5 +1,5 @@
-SRC		    = src/main.cpp src/DAW/Modularsynth.cpp src/DAW/Score.cpp
-TEST		= tests/ScoreSuite.cpp tests/Suite.cpp tests/ScoreTest.cpp tests/Test.cpp src/DAW/Score.cpp
+SRC		    = src/main.cpp src/DAW/Modularsynth.cpp src/DAW/Score.cpp src/DAW/Rack.cpp
+# TEST		= tests/ScoreSuite.cpp tests/Suite.cpp tests/ScoreTest.cpp tests/Test.cpp src/DAW/Score.cpp
 #tests/Date.cpp  
 CC			= g++
 

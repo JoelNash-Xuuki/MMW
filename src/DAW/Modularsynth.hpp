@@ -2,53 +2,19 @@
 #define ModularSynth_H
 #include <string>
 #include <fstream>
+#include "Modules.hpp"
+#include "Rack.hpp"
 using namespace std;
-#define MODSYN_CHARS (128)
-#define MAXMODS (256)
-
-typedef struct {
-  char frequency[MODSYN_CHARS];
-  char sigOut[MODSYN_CHARS];
-  char sigAm[MODSYN_CHARS];
-  char sigFm[MODSYN_CHARS];
-  char waveForm[MODSYN_CHARS];
-  char oMin[MODSYN_CHARS];
-  char oMax[MODSYN_CHARS];
-} OscMod;
-
-typedef struct {
-  char sigOut[MODSYN_CHARS];
-  char input[MODSYN_CHARS];
-  char cutoff[MODSYN_CHARS];
-  char resonance[MODSYN_CHARS];
-} VcfMod;
-
-typedef struct {
-  char sigOut[MODSYN_CHARS];
-  char speed[MODSYN_CHARS];
-  char seed[MODSYN_CHARS];
-  char oMin[MODSYN_CHARS];
-  char oMax[MODSYN_CHARS];
-} NoiseMod;
-
-typedef struct {
-  char outVar[MODSYN_CHARS];
-  char amplitude[MODSYN_CHARS];
-} MixOut;
-
-class Rack{
-  public:
-	Rack();
-    OscMod *oscs;
-    int oscCount;
-	NoiseMod *noises;
-};
 
 class ModularSynth{
+  public:
+	ModularSynth(string name);
+	void runPatch();
+
   private:
+    void createRackWithModules();
 	ofstream orcFile;
 	Rack rack;
-	bool wasRun; 
     void readOsc(OscMod *oscs, int count);
     void readNoise(NoiseMod *unit, int count);
     void readVcf(VcfMod *vcf, int count);
@@ -67,17 +33,9 @@ class ModularSynth{
     void printSah(NoiseMod noise, ofstream& orcFile);
     void printVcf(VcfMod vcf, ofstream& orcFile);
 	void printMix(MixOut mix, ofstream& orcFile);
-	void createRackWithModules();
-
     string readFileIntoString(const string& path);
     int asciiToMidi(char note);
     double calculateFreq(int noteNo);
 	void printScore(string file);
-
-	
-  public:
-	ModularSynth(string name);
-	void testMethod();
-	void runPatch();
 };
 # endif
