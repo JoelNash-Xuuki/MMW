@@ -7,7 +7,7 @@
 int main(int argc, char **argv){
   ModularSynth ms= ModularSynth("synth");
   ms.runPatch();
-//  Score s= Score("test.ly");
-//  system("lilypond test.ly");
+//  Score s= Score("doc/ly/test.ly");
+  system("lilypond doc/ly/test.ly");
   return 0;
 }
